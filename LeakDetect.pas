@@ -9,6 +9,7 @@ uses
 
 var
   HPS, HPF: THeapStatus;
+  S: string;
 
 initialization
 
@@ -17,7 +18,8 @@ initialization
 finalization
 
   HPF:=GetHeapStatus;
-  if HPS.TotalAllocated<>HPF.TotalAllocated
-    then MessageBox(0, 'Memory leak detected', 'Warning', MB_ICONEXCLAMATION);
+  Str(HPF.TotalAllocated - HPS.TotalAllocated, S);
+  if HPS.TotalAllocated <> HPF.TotalAllocated then
+    MessageBox(0, PChar('Memory leak detected: ' + S + ' bytes leaked'), 'Warning', MB_ICONEXCLAMATION);
 
 end.

@@ -1,9 +1,9 @@
-unit avlJSON;
+unit avlJSON; 
 
 interface
 
 uses
-  Windows, AvL, avlMath, avlUtils;
+  Windows, AvL, avlMath;
 
 type
   TJsonSettings = record
@@ -68,6 +68,9 @@ function JsonToStr(Json: PJsonValue; Depth: Integer = 0): string;
 implementation
 
 var __turboFloat: word;
+
+const
+  BoolToStr: array[Boolean] of string = ('false', 'true');
 
 function _isdigit(c: Integer): LongBool; cdecl;
 begin
@@ -247,7 +250,7 @@ begin
     jtInteger: AddLine('int: ' + Int64ToStr(Json.Int));
     jtDouble: AddLine('double: ' + FloatToStr(Json.Dbl));
     jtString: AddLine('string: ' + UTF8Decode(Json.Str.Value));
-    jtBoolean: AddLine('bool: ' + BoolToStr(Json.Bool <> 0));
+    jtBoolean: AddLine('bool: ' + BoolToStr[Json.Bool <> 0]);
     jtNull: AddLine('null');
   end;
   Delete(Result, Length(Result) - 1, 2);
