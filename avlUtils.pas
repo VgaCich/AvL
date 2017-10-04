@@ -34,6 +34,7 @@ function CorrectFileName(const FileName: string): string;
 function FlSize(const FileName: string): Cardinal;
 function DirSize(Dir: string): Cardinal;
 function FlModifyTime(const FileName: string): TDateTime;
+function LoadFile(const FileName: string): string;
 procedure RemoveVoidStrings(Strings: TStringList);
 procedure FreeMemAndNil(var P: Pointer; Size: integer);
 procedure FAN(var Obj);
@@ -350,6 +351,19 @@ begin
     Result:=FileTimeToDateTime(FT);
   finally
     FAN(Fl);
+  end;
+end;
+
+function LoadFile(const FileName: string): string;
+var
+  F: TFileStream;
+begin
+  F := TFileStream.Create(FileName, fmOpenRead or fmShareDenyWrite);
+  try
+    SetLength(Result, F.Size);
+    F.Read(Result[1], F.Size);
+  finally
+    FAN(F);
   end;
 end;
 
