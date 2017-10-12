@@ -61,8 +61,10 @@ function JsonInt(Value: PJsonValue): Int64;
 function JsonFloat(Value: PJsonValue): Double;
 function JsonStr(Value: PJsonValue): string;
 function JsonWStr(Value: PJsonValue): WideString;
-function JsonItem(Value: PJsonValue; Index: Integer): PJsonValue; overload;
+function JsonItem(Value: PJsonValue; Index: Cardinal): PJsonValue; overload;
 function JsonItem(Value: PJsonValue; const Name: string): PJsonValue; overload;
+function JsonExtractItem(Value: PJsonValue; Index: Cardinal): PJsonValue; overload;
+function JsonExtractItem(Value: PJsonValue; const Name: string): PJsonValue; overload;
 function JsonToStr(Json: PJsonValue; Depth: Integer = 0): string;
 
 implementation
@@ -164,25 +166,31 @@ end;
 
 function JsonBool(Value: PJsonValue): Boolean;
 begin
-  Result := (Value.VType = jtBoolean) and (Value.Bool <> 0); 
+  Result := Assigned(Value) and (Value.VType = jtBoolean) and (Value.Bool <> 0);
 end;
 
 function JsonInt(Value: PJsonValue): Int64;
 begin
-  case Value.VType of
-    jtInteger: Result := Value.Int;
-    jtDouble: Result := Trunc(Value.Dbl);
-    else Result := 0;
-  end;
+  if Assigned(Value) then
+    case Value.VType of
+      jtInteger: Result := Value.Int;
+      jtDouble: Result := Trunc(Value.Dbl);
+      else Result := 0;
+    end
+  else
+    Result := 0;
 end;
 
 function JsonFloat(Value: PJsonValue): Double;
 begin
-  case Value.VType of
-    jtInteger: Result := Value.Int;
-    jtDouble: Result := Value.Dbl;
-    else Result := 0.0;
-  end;
+  if Assigned(Value) then
+    case Value.VType of
+      jtInteger: Result := Value.Int;
+      jtDouble: Result := Value.Dbl;
+      else Result := 0.0;
+    end
+  else
+    Result := 0.0;
 end;
 
 function JsonStr(Value: PJsonValue): string;
@@ -192,31 +200,84 @@ end;
 
 function JsonWStr(Value: PJsonValue): WideString;
 begin
-  if Value.VType = jtString then
+  if Assigned(Value) and (Value.VType = jtString) then
     Result := UTF8Decode(Value.Str.Value)
   else
     Result := '';
 end;
 
-function JsonItem(Value: PJsonValue; Index: Integer): PJsonValue;
+type
+  PPJsonValue = ^PJsonValue;
+
+function JsonFindItem(Value: PJsonValue; Index: Cardinal): PPJsonValue; overload;
 begin
   Result := nil;
-  if (Value.VType <> jtArray) or (Index < 0) or (Index >= Value.Arr.Length) then Exit;
-  Result := Value.Arr.Values[Index];
+  if not Assigned(Value) or (Value.VType <> jtArray) or (Index >= Value.Arr.Length) then Exit;
+  Result := @Value.Arr.Values[Index];
+end;
+
+function JsonFindItem(Value: PJsonValue; const Name: string): PPJsonValue; overload;
+var
+  i: Cardinal;
+begin
+  Result := nil;
+  if not Assigned(Value) or (Value.VType <> jtObject) then Exit;
+  for i := 0 to Value.Obj.Length - 1 do
+    if Value.Obj.Values[i].Name = Name then
+    begin
+      Result := @Value.Obj.Values[i].Value;
+      Break;
+    end;
+end;
+
+function JsonItem(Value: PJsonValue; Index: Cardinal): PJsonValue;
+var
+  P: PPJsonValue;
+begin
+  P := JsonFindItem(Value, Index);
+  if Assigned(P) then
+    Result := P^
+  else
+    Result := nil;
 end;
 
 function JsonItem(Value: PJsonValue; const Name: string): PJsonValue;
 var
-  i: Integer;
+  P: PPJsonValue;
 begin
-  Result := nil;
-  if Value.VType <> jtObject then Exit;
-  for i := 0 to Value.Obj.Length - 1 do
-    if Value.Obj.Values[i].Name = Name then
-    begin
-      Result := Value.Obj.Values[i].Value;
-      Break;
-    end;
+  P := JsonFindItem(Value, Name);
+  if Assigned(P) then
+    Result := P^
+  else
+    Result := nil;
+end;
+
+function JsonExtractItem(Value: PJsonValue; Index: Cardinal): PJsonValue;
+var
+  P: PPJsonValue;
+begin
+  P := JsonFindItem(Value, Index);
+  if Assigned(P) then
+  begin
+    Result := P^;
+    P^ := nil;
+  end
+  else
+    Result := nil;
+end;
+
+function JsonExtractItem(Value: PJsonValue; const Name: string): PJsonValue;
+var
+  P: PPJsonValue;
+begin
+  P := JsonFindItem(Value, Name);
+  if Assigned(P) then
+  begin
+    Result := P^;
+    P^ := nil;
+  end
+  else
+    Result := nil;
 end;
 
 function JsonToStr(Json: PJsonValue; Depth: Integer = 0): string;

@@ -358,6 +358,7 @@ function LoadFile(const FileName: string): string;
 var
   F: TFileStream;
 begin
+  Result := '';
   F := TFileStream.Create(FileName, fmOpenRead or fmShareDenyWrite);
   try
     SetLength(Result, F.Size);
