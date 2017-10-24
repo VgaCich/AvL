@@ -18,7 +18,9 @@ function PosEx(const SubStr, S: string; Offset: Cardinal = 1): Integer;
 function TryStrToInt(const S: string; out Value: Integer): Boolean;
 function TryStrToFloat(const S: string; out Value: Single): Boolean;
 function StrToCar(const S: string): Cardinal;
+function StrToInt64(const S: string): Int64;
 function StrToInt64Def(const S: string; const Default: Int64): Int64;
+function Int64ToStr(const I: Int64): string;
 function HexToByte(const Hex: string): byte;
 function FloatToStr2(M: Real; I, D: Integer): string;
 function FloatToStrF(X: Extended): string;
@@ -211,12 +213,24 @@ begin
   Val(S, Result, E);
 end;
 
+function StrToInt64(const S: string): Int64;
+var
+  E: Integer;
+begin
+  Val(S, Result, E);
+end;
+
 function StrToInt64Def(const S: string; const Default: Int64): Int64;
 var
   E: Integer;
 begin
   Val(S, Result, E);
   if E <> 0 then Result := Default;
+end;
+
+function Int64ToStr(const I: Int64): string;
+begin
+  Str(I, Result);
 end;
 
 function HexToByte(const Hex: string): byte;
