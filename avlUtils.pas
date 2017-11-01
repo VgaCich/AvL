@@ -55,6 +55,7 @@ function MessageDlg(const Text, Title: string; Style: Cardinal): Integer;
 procedure MessageFmt(const Fmt: string; const Args: array of const);
 function FullExeName: string;
 function SizeToStr(Size: Int64): string;
+function EtaToStr(Left, Speed: Int64): string;
 function CheckPath(const Path: string; Abs: Boolean): Boolean;
 {function GetShiftState: TShiftState; }
 function FindCmdLineSwitch(const Switch: string; SwitchChars: TSysCharSet; IgnoreCase: Boolean): Boolean;
@@ -573,6 +574,24 @@ begin
     then Result:=FloatToStr2(Size/GB, 1, 2)+GBS;
   if Size>=TB
     then Result:=FloatToStr2(Size/TB, 1, 2)+TBS;
+end;
+
+function EtaToStr(Left, Speed: Int64): string;
+var
+  Secs: Integer;
+begin
+  Result := '-';
+  if (Speed = 0) or (Left = 0) then
+    Exit;
+  Secs := Left div Speed;
+  if Secs < 60 then
+    Result := Int64ToStr(Secs) + ' s'
+  else if Secs < 3600 then
+    Result := Format('%d:%02d m', [Secs div 60, Secs mod 60])
+  else if Secs < 86400 then
+    Result := Format('%d:%02d h', [Secs div 3600, (Secs mod 3600) div 60])
+  else
+    Result := Format('%d d %d h', [Secs div 86400, (Secs mod 86400) div 3600]);
 end;
 
 function CheckPath(const Path: string; Abs: Boolean): Boolean;

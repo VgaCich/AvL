@@ -11,10 +11,13 @@ type
     function GetItemObject(Index: Integer): TObject;
     function GetSelected(Index: Integer): Integer;
     procedure SetItemObject(Index: Integer; const Value: TObject);
+    function GetColumnWidth(Index: Integer): Integer;
+    procedure SetColumnWidth(Index: Integer; const Value: Integer);
   public
     function ItemAtPoint(X, Y: Integer): Integer;
     property ItemObject[Index: Integer]: TObject read GetItemObject write SetItemObject;
     property Selected[Index: Integer]: Integer read GetSelected;
+    property ColumnWidth[Index: Integer]: Integer read GetColumnWidth write SetColumnWidth;
   end;
 
 implementation
@@ -58,6 +61,16 @@ var
 begin
   HTI.pt := Point(X, Y);
   Result := Perform(LVM_HITTEST, 0, Integer(@HTI));
+end;
+
+function TListViewEx.GetColumnWidth(Index: Integer): Integer;
+begin
+  Result := Perform(LVM_GETCOLUMNWIDTH, Index, 0);
+end;
+
+procedure TListViewEx.SetColumnWidth(Index: Integer; const Value: Integer);
+begin
+  Perform(LVM_SETCOLUMNWIDTH, Index, MakeLParam(Value, 0));
 end;
 
 end.
