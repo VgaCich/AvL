@@ -7340,8 +7340,8 @@ var
   I: Integer;
 begin
   I := Length(FileName);
-  while (I > 1) and not (FileName[I] in ['\', ':']) do Dec(I);
-  if FileName[I] in ['\', ':']
+  while (I > 1) and not (FileName[I] in ['\', '/', ':']) do Dec(I);
+  if FileName[I] in ['\', '/', ':']
     then Result := Copy(FileName, 1, I)
     else Result:='';
   if Result[0] > #0 then
@@ -7353,9 +7353,9 @@ var
   I: Integer;
 begin
   I := Length(FileName);
-  while (I > 2) and not (FileName[I] in ['\', ':']) do Dec(I);
-  if (I > 2) and (FileName[I] = '\') and
-    not (FileName[I - 1] in ['\', ':']) then Dec(I);
+  while (I > 2) and not (FileName[I] in ['\', '/', ':']) do Dec(I);
+  if (I > 2) and (FileName[I] in ['\', '/']) and
+    not (FileName[I - 1] in ['\', '/', ':']) then Dec(I);
   Result := Copy(FileName, 1, I);
   if Result[0] > #0 then
     if Result[Ord(Result[0])] = #0 then Dec(Result[0]);
@@ -7374,7 +7374,7 @@ var
   I: Integer;
 begin
   I := Length(FileName);
-  while (I >= 1) and not (FileName[I] in ['\', ':']) do Dec(I);
+  while (I >= 1) and not (FileName[I] in ['\', '/', ':']) do Dec(I);
   Result := Copy(FileName, I + 1, 255);
   if Result[0] > #0 then
     if Result[Ord(Result[0])] = #0 then Dec(Result[0]);
@@ -7385,7 +7385,7 @@ var
   I: Integer;
 begin
   I := Length(FileName);
-  while (I > 1) and not (FileName[I] in ['.', '\', ':']) do Dec(I);
+  while (I > 1) and not (FileName[I] in ['.', '\', '/', ':']) do Dec(I);
   if (I > 1) and (FileName[I] = '.') then
     Result := Copy(FileName, I, 255) else
     Result := '';
