@@ -15,6 +15,7 @@ type
     procedure SetColumnWidth(Index: Integer; const Value: Integer);
   public
     function ItemAtPoint(X, Y: Integer): Integer;
+    procedure ClearSelection;
     property ItemObject[Index: Integer]: TObject read GetItemObject write SetItemObject;
     property Selected[Index: Integer]: Integer read GetSelected;
     property ColumnWidth[Index: Integer]: Integer read GetColumnWidth write SetColumnWidth;
@@ -55,14 +56,6 @@ begin
   Perform(LVM_SETITEM, 0, Integer(@Item));
 end;
 
-function TListViewEx.ItemAtPoint(X, Y: Integer): Integer;
-var
-  HTI: TLVHitTestInfo;
-begin
-  HTI.pt := Point(X, Y);
-  Result := Perform(LVM_HITTEST, 0, Integer(@HTI));
-end;
-
 function TListViewEx.GetColumnWidth(Index: Integer): Integer;
 begin
   Result := Perform(LVM_GETCOLUMNWIDTH, Index, 0);
@@ -71,6 +64,25 @@ end;
 procedure TListViewEx.SetColumnWidth(Index: Integer; const Value: Integer);
 begin
   Perform(LVM_SETCOLUMNWIDTH, Index, MakeLParam(Value, 0));
+end;
+
+function TListViewEx.ItemAtPoint(X, Y: Integer): Integer;
+var
+  HTI: TLVHitTestInfo;
+begin
+  HTI.pt := Point(X, Y);
+  Result := Perform(LVM_HITTEST, 0, Integer(@HTI));
+end;
+
+procedure TListViewEx.ClearSelection;
+var
+  Item: TLVItem;
+begin
+  ZeroMemory(@Item, SizeOf(Item));
+  Item.mask := LVIF_STATE;
+  Item.StateMask := LVIS_SELECTED;
+  while SelCount > 0 do
+    Perform(LVM_SETITEMSTATE, SelectedIndex, Longint(@Item));
 end;
 
 end.
