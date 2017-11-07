@@ -4143,7 +4143,8 @@ function ImageList_SetOverlayImage(ImageList: HIMAGELIST; Image: Integer; Overla
 const
   SHGFI_LARGEICON         = $000000000;     { get large icon }
   SHGFI_SMALLICON         = $000000001;     { get small icon }
-  SHGFI_OPENICON          = $000000002;     { get open icon }  
+  SHGFI_OPENICON          = $000000002;     { get open icon }
+  SHGFI_USEFILEATTRIBUTES = $000000010;     { use passed dwFileAttribute }  
   SHGFI_ICON              = $000000100;     { get icon }
   SHGFI_TYPENAME          = $000000400;     { get type name }  
   SHGFI_SYSICONINDEX      = $000004000;     { get system icon index }
@@ -9339,7 +9340,7 @@ var
   Flags: Integer;
 begin
   if OpenIcon then Flags := SHGFI_OPENICON else Flags := 0;
-  ShGetFileInfo(PChar(Path), 0, SFI, SizeOf(SFI), Flags or SHGFI_ICON or SHGFI_SMALLICON or SHGFI_SYSICONINDEX);
+  ShGetFileInfo(PChar(Path), FILE_ATTRIBUTE_NORMAL, SFI, SizeOf(SFI), Flags or SHGFI_USEFILEATTRIBUTES or SHGFI_ICON or SHGFI_SMALLICON or SHGFI_SYSICONINDEX);
   Result := SFI.iIcon;
 end;
 
