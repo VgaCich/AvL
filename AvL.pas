@@ -16204,13 +16204,16 @@ end;
 procedure TWinControl.CanvasInit;
 begin
   if FCanvas = nil then
-   begin
+  begin
     FCanvas := TCanvas.Create(FHandle);
     FCanvas.Pen := TPen.Create(FCanvas);
     FCanvas.Brush := TBrush.Create(FCanvas);
-    FCanvas.Font := TFont.Create;
-    FCanvas.Font.FCtrlHandle := FCanvas.Handle; 
-   end;      
+    if not Assigned(FFont) then
+    begin
+      FCanvas.Font := TFont.Create;
+      FCanvas.Font.FCtrlHandle := FCanvas.Handle;
+    end;
+  end;
 end;
 
 procedure TTabControl.SetTabPosition(const Value: TTabPosition);
@@ -17466,7 +17469,7 @@ begin
 
     PixelFormat := pf32bit ;
     Canvas.Brush.Color := clWhite;
-    Canvas.Rectangle(0, 0, Width, Height);
+    Canvas.FillRect(Rect(0, 0, Width, Height));
   end;
 end;
 

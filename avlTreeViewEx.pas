@@ -12,7 +12,6 @@ type
     function GetSelected: Integer;
     procedure SetSelected(const Value: Integer);
   public
-    constructor Create(AParent: TWinControl);
     function ItemInsert(Parent, InsertAfter: Integer; Text: string; Obj: TObject): Integer;
     procedure DeleteItem(Item: Integer);
     function GetItemText(Item: Integer): string;
@@ -27,12 +26,6 @@ type
 implementation
 
 { TTreeViewEx }
-
-constructor TTreeViewEx.Create(AParent: TWinControl);
-begin
-  inherited;
-  Style := Style or TVS_EDITLABELS or TVS_SHOWSELALWAYS;
-end;
 
 procedure TTreeViewEx.DeleteItem(Item: Integer);
 begin
