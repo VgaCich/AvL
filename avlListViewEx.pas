@@ -16,6 +16,7 @@ type
   public
     function ItemAtPoint(X, Y: Integer): Integer;
     procedure ClearSelection;
+    procedure SelectAll;
     property ItemObject[Index: Integer]: TObject read GetItemObject write SetItemObject;
     property Selected[Index: Integer]: Integer read GetSelected;
     property ColumnWidth[Index: Integer]: Integer read GetColumnWidth write SetColumnWidth;
@@ -83,6 +84,14 @@ begin
   Item.StateMask := LVIS_SELECTED;
   while SelCount > 0 do
     Perform(LVM_SETITEMSTATE, SelectedIndex, Longint(@Item));
+end;
+
+procedure TListViewEx.SelectAll;
+var
+  i: Integer;
+begin
+  for i := 0 to ItemCount - 1 do
+    SelectedIndex := i; 
 end;
 
 end.
