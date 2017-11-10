@@ -70,6 +70,8 @@ function ExecAndWait(const CmdLine: string): Boolean;
 function GUIDToString(const GUID: TGUID): string;
 procedure SelfDelete;
 function FileAttributesToStr(Attributes: Integer): string;
+function DateTimeToUnix(const AValue: TDateTime): Int64;
+function UnixToDateTime(const AValue: Int64): TDateTime;
 
 implementation
 
@@ -820,6 +822,20 @@ begin
     Result[1] := 'r';
   if Attributes and FILE_ATTRIBUTE_SYSTEM <> 0 then
     Result[4] := 's';
+end;
+
+const
+  UnixDateDelta = 25569.0 + 693594.0; //AvL seems to use Delphi 1 TDateTime
+  SecsPerDay = 86400;
+
+function DateTimeToUnix(const AValue: TDateTime): Int64;
+begin
+  Result := Round((AValue - UnixDateDelta) * SecsPerDay);
+end;
+
+function UnixToDateTime(const AValue: Int64): TDateTime;
+begin
+  Result := AValue / SecsPerDay + UnixDateDelta;
 end;
 
 end.

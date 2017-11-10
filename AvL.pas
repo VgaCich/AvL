@@ -1301,6 +1301,7 @@ type
   PStringItem = ^TStringItem;
   TStringItem = record
     FString: string;
+    FObject: TObject;
   end;
   
   PStringItemList = ^TStringItemList;
@@ -1339,6 +1340,7 @@ type
     destructor Destroy; override;
     procedure Assign(Strings: TStringList);    
     function Add(const S: string): Integer;// override;
+    function AddObject(const S: string; Obj: TObject): Integer;
     property Capacity: Integer read GetCapacity write SetCapacity;
     procedure Changed; virtual;
     procedure Clear; //override;    
@@ -1349,6 +1351,7 @@ type
     function IndexOfName(const Name: string): Integer;    
     property Values[const Name: string]: string read GetValue write SetValue;         
     property Strings[Index: Integer]: string read Get write Put; default;
+    property Objects[Index: Integer]: TObject read GetObject write PutObject;
     procedure LoadFromFile(const FileName: string); virtual;
     procedure LoadFromStream(Stream: TStream); virtual;
     procedure SaveToFile(const FileName: string); virtual;
@@ -11537,12 +11540,18 @@ begin
   with FList^[FCount] do
   begin
     Pointer(FString) := nil;
-//    FObject := nil;
+    FObject := nil;
     FString := S;
   end;
   Result := FCount;
   Inc(FCount);
   Changed;
+end;
+
+function TStringList.AddObject(const S: string; Obj: TObject): Integer;
+begin
+  Result := Add(S);
+  PutObject(Result, Obj);
 end;
 
 procedure TStringList.Clear;
@@ -11553,7 +11562,7 @@ begin
     Finalize(FList^[0], FCount);
     FCount := 0;
     SetCapacity(0);
-//    Changed;
+    Changed;
    end;
 end;
 
@@ -11623,7 +11632,10 @@ end;
 
 function TStringList.GetObject(Index: Integer): TObject; //13.07.03
 begin
-  Result := nil;
+  if (Index < 0) or (Index >= FCount) then
+    Result := nil
+  else
+    Result := FList^[Index].FObject;
 end;
 
 procedure TStringList.InsertObject(Index: Integer; const S: string; //13.07.03
@@ -11635,6 +11647,8 @@ end;
 
 procedure TStringList.PutObject(Index: Integer; AObject: TObject); //13.07.03
 begin
+  if (Index < 0) or (Index >= FCount) then Exit;
+  FList^[Index].FObject := AObject;
 end;
 
 procedure TStringList.Put(Index: Integer; const Value: string); //13.07.03
