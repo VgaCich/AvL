@@ -15115,14 +15115,12 @@ end;
 function TListView.GetItem(Row, Col: Integer): String;
 var
   Item: TLVItem;
-  buf: PChar;
 begin
-  GetMem(buf, 100);
+  SetLength(Result, 1024);
   Item.iSubItem := Col;
-  Item.pszText := buf;
-  Item.cchTextMax := 100;
-  Perform(LVM_GETITEMTEXT, Row, Longint(@Item));
-  Result := buf ;
+  Item.pszText := PChar(Result);;
+  Item.cchTextMax := 1024;
+  SetLength(Result, Perform(LVM_GETITEMTEXT, Row, Longint(@Item)));
 end;
 
 procedure TListView.SetItem(Row, Col: Integer; const Value: String);
