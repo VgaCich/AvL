@@ -12460,11 +12460,9 @@ begin
 end;
 
 function TListBox.GetItem(Index: Integer): String;
-var
-  Text: ShortString;
 begin
-  Text[0] := Chr(Perform(LB_GETTEXT, Index, Longint(@Text[1])));
-  Result := Text;
+  SetLength(Result, Perform(LB_GETTEXTLEN, Index, 0));
+  SetLength(Result, Perform(LB_GETTEXT, Index, Longint(PChar(Result))));
 end;
 
 function TListBox.ItemAdd(s: String): Integer;
