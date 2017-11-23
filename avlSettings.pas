@@ -110,6 +110,7 @@ end;
 
 procedure TSettings.RestoreFormState(const Name: string; Form: TForm);
 begin
+  Form.WindowState := SW_NORMAL;
   Form.SetBounds(ReadInteger(Name, 'Left', Form.Left),
                  ReadInteger(Name, 'Top', Form.Top),
                  ReadInteger(Name, 'Width', Form.Width),
