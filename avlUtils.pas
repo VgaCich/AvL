@@ -72,6 +72,7 @@ procedure SelfDelete;
 function FileAttributesToStr(Attributes: Integer): string;
 function DateTimeToUnix(const AValue: TDateTime): Int64;
 function UnixToDateTime(const AValue: Int64): TDateTime;
+function LerpColor(A, B: TColor; F: Single): TColor;
 
 implementation
 
@@ -836,6 +837,19 @@ end;
 function UnixToDateTime(const AValue: Int64): TDateTime;
 begin
   Result := AValue / SecsPerDay + UnixDateDelta;
+end;
+
+function LerpColor(A, B: TColor; F: Single): TColor;
+const
+  M1: Integer = $00FF00FF;
+  M2: Integer = $FF00FF00;
+var
+  F1, F2: Integer;
+begin
+  F2 := Round(256 * F);
+  F1 := 256 - F2;
+  Result := (((((A and M1) * F1) + ((B and M1) * F2)) shr 8) and M1) or
+            (((((A and M2) * F1) + ((B and M2) * F2)) shr 8) and M2);
 end;
 
 end.
