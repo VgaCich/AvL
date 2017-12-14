@@ -5216,6 +5216,7 @@ begin
     FParent := FParent.FNext;
   if Assigned(FParent) then
     FParent.FNext := FNext;
+  DestroyWindow(FHandle);
   FFont.Free;
   FCanvas.Free;
   inherited Destroy;
