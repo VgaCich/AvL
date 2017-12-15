@@ -1389,11 +1389,12 @@ type
   
 
   TWinControl = class ;
+  TCanvas = class;
 
  { Font }
     TFontPitch = (fpDefault, fpFixed, fpVariable);
 //    TFontCharset = 0..255;
-//    TFontDataName = string[LF_FACESIZE - 1];  
+//    TFontDataName = string[LF_FACESIZE - 1];
     TFontStyle = (fsBold, fsItalic, fsUnderline, fsStrikeOut);
     TFontStyles = set of TFontStyle;
 
@@ -1401,6 +1402,7 @@ type
    private
      FHandle  : HFont;
      FControl : TWinControl;
+     FCanvas  : TCanvas;
      FName: String;
      FBold,
      FItalic,
@@ -1427,7 +1429,8 @@ type
      FCtrlHandle: THandle;
      procedure SetStyle(Value: TFontStyles);
    public
-     constructor Create;
+     constructor Create; overload;
+     constructor Create(Canvas: TCanvas); overload;
      property Handle: HFont read FHandle write FHandle;
      property Charset: Byte read FCharset write SetCharset;     
      property Color: TColor read FColor write SetColor;
@@ -1444,8 +1447,6 @@ type
   TPenMode = (pmBlack, pmWhite, pmNop, pmNot, pmCopy, pmNotCopy,
               pmMergePenNot, pmMaskPenNot, pmMergeNotPen, pmMaskNotPen, pmMerge,
               pmNotMerge, pmMask, pmNotMask, pmXor, pmNotXor);
-
-  TCanvas = class;
 
   TPen = class
   private
@@ -5004,6 +5005,13 @@ begin
 //  FSize := 8;
 end;
 
+constructor TFont.Create(Canvas: TCanvas);
+begin
+  FCanvas := Canvas;
+  Create;
+  UpdateFont;
+end;
+
 procedure TFont.SetColor(const Value: TColor);
 begin
   FColor := Value;
@@ -5124,7 +5132,12 @@ begin  //Ставим шрифт
   if FControl<>nil then
     SendMessage(FControl.Handle , WM_SETFONT, FHandle, 0)
   else
-    SendMessage(FCtrlHandle , WM_SETFONT, FHandle, 0)
+    SendMessage(FCtrlHandle , WM_SETFONT, FHandle, 0);
+  if FCanvas <> nil then
+  begin
+    SelectObject(FCanvas.Handle, FHandle);
+    SetTextColor(FCanvas.Handle, ColorToRGB(FColor));
+  end;
 end;
 //{$endif}
 
@@ -13681,8 +13694,11 @@ end;
 
 procedure TCanvas.CreateFont;
 begin
-//  SelectObject(FHandle, Font.GetHandle);
-//  SetTextColor(FHandle, ColorToRGB(Font.Color));
+  if Assigned(Font) then
+  begin
+    SelectObject(FHandle, Font.Handle);
+    SetTextColor(FHandle, ColorToRGB(Font.Color));
+  end;
 end;
 
 procedure TCanvas.CreatePen;
