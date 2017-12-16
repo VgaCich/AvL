@@ -2205,6 +2205,14 @@ type
     property Text;
  end;
 
+  TComboBoxEx = class(TComboBox)
+  private
+    function GetObject(Index: Integer): TObject;
+    procedure SetObject(Index: Integer; Value: TObject);
+  public
+    property Objects[Index: Integer]: TObject read GetObject write SetObject;
+  end;
+
  { TScrollBar }
 
 const
@@ -5131,7 +5139,7 @@ begin  //Ставим шрифт
 
   if FControl<>nil then
     SendMessage(FControl.Handle , WM_SETFONT, FHandle, 0)
-  else
+  else if FCtrlHandle <> 0 then
     SendMessage(FCtrlHandle , WM_SETFONT, FHandle, 0);
   if FCanvas <> nil then
   begin
@@ -13570,6 +13578,20 @@ begin
   
   DrawText(amsg.DrawItemStruct.hDC, PChar(Items[AMsg.DrawItemStruct.itemID]), Length(Items[AMsg.DrawItemStruct.itemID]), cbRect, DT_SINGLELINE or DT_VCENTER or DT_NOPREFIX);
 end; *)
+
+{ TComboBoxEx }
+
+function TComboBoxEx.GetObject(Index: Integer): TObject;
+begin
+  if (Index >= 0) and (Index < ItemCount) then
+    Result := TObject(Perform(CB_GETITEMDATA, Index, 0));
+end;
+
+procedure TComboBoxEx.SetObject(Index: Integer; Value: TObject);
+begin
+  if (Index >= 0) and (Index < ItemCount) then
+    Perform(CB_SETITEMDATA, Index, Integer(Value));
+end;
 
 { TCanvas }
 
