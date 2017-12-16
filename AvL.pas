@@ -13684,7 +13684,9 @@ end; *)
 function TComboBoxEx.GetObject(Index: Integer): TObject;
 begin
   if (Index >= 0) and (Index < ItemCount) then
-    Result := TObject(Perform(CB_GETITEMDATA, Index, 0));
+    Result := TObject(Perform(CB_GETITEMDATA, Index, 0))
+  else
+    Result := nil;
 end;
 
 procedure TComboBoxEx.SetObject(Index: Integer; Value: TObject);
