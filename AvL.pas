@@ -3658,7 +3658,7 @@ procedure MsgBox(S:String);//vb
 procedure MsgDlg(Text, Title:String);
 procedure MsgOk(S: String); //30.03.04
 procedure ShowMessage(S:String);
-function InputQuery(AParent: TWinControl; const ACaption, APrompt: string; var Value: string): Boolean;
+function InputQuery(AParent: THandle; const ACaption, APrompt: string; var Value: string): Boolean;
 function SysErrorMessage(ErrorCode: Integer): string;
 //System Flags
 function TimeSeparator: Char;
@@ -6409,106 +6409,155 @@ begin
 end;
 //{$endif}
 
-{function InputQuery(const ACaption, APrompt: string; var Value: string): Boolean;
+function InputQuery(AParent: THandle; const ACaption, APrompt: string; var Value: string): Boolean;
+type
+  TParams = record
+    Caption, Prompt, Result: string;
+  end;
+  PParams = ^TParams;
+const
+  ID_PROMPT = $1000;
+  ID_EDIT = $1001;
+  ID_BTNOK = $1002;
+  ID_BTNCANCEL = $1003;
+
+  function HookProc(hWnd: THandle; Msg: UINT; wParam, lParam: Longint): Longint; stdcall;
+  begin
+    if (Msg = WM_KEYUP) and (wParam in [VK_RETURN, VK_ESCAPE]) then
+      SendMessage(GetWindowLong(hWnd, GWL_HWNDPARENT), Msg, wParam, lParam);
+    Result := CallWindowProc(Pointer(GetWindowLong(hWnd, GWL_USERDATA)), hWnd, Msg, wParam, lParam);
+  end;
+
+  procedure SetHook(hWnd: THandle);
+  begin
+    SetWindowLong(hWnd, GWL_USERDATA, SetWindowLong(hWnd, GWL_WNDPROC, Longint(@HookProc)));
+  end;
+
+  function DlgProc(hWnd: THandle; Msg: UINT; wParam, lParam: Longint): Longbool; stdcall;
+  var
+    Edit: THandle;
+  begin
+    Result := true;
+    case Msg of
+      WM_INITDIALOG: begin
+        SetWindowLong(hWnd, GWL_USERDATA, lParam);
+        SetWindowText(hWnd, PChar(PParams(lParam).Caption));
+        SetWindowText(GetDlgItem(hWnd, ID_PROMPT), PChar(PParams(lParam).Prompt));
+        Edit := GetDlgItem(hWnd, ID_EDIT);
+        SetWindowText(Edit, PChar(PParams(lParam).Result));
+        SendMessage(Edit, EM_SETSEL, 0, -1);
+        SetFocus(Edit);
+        SetHook(Edit);
+        SetHook(GetDlgItem(hWnd, ID_PROMPT));
+        SetHook(GetDlgItem(hWnd, ID_BTNOK));
+        SetHook(GetDlgItem(hWnd, ID_BTNCANCEL));
+        Result :=false;
+      end;
+      WM_KEYUP:
+        if wParam = VK_ESCAPE then
+          SendMessage(hWnd, WM_COMMAND, ID_BTNCANCEL, 0);
+      WM_COMMAND: case LoWord(wParam) of
+        ID_BTNOK: begin
+          Edit := GetDlgItem(hWnd, ID_EDIT);
+          with PParams(GetWindowLong(hWnd, GWL_USERDATA))^ do
+          begin
+            SetLength(Result, GetWindowTextLength(Edit));
+            GetWindowText(Edit, PChar(Result), Length(Result) + 1); 
+          end;
+          EndDialog(hWnd, ID_OK);
+        end;
+        ID_BTNCANCEL: EndDialog(hWnd, ID_CANCEL);
+      end;
+      WM_CLOSE: SendMessage(hWnd, WM_COMMAND, ID_BTNCANCEL, 0);
+      else Result := false;
+    end;
+  end;
+
+const
+  DlgTemplate: record
+    Dlg: TDlgTemplate;
+    DlgVLA: array[0..2] of Word;
+    DlgFont: array[0..15] of WideChar;
+    Prompt: TDlgItemTemplate;
+    PromptVLA: array[0..2] of Word;
+    PromptCD: Integer;
+    Edit: TDlgItemTemplate;
+    EditVLA: array[0..2] of Word;
+    EditCD: Integer;
+    OK: TDlgItemTemplate;
+    OKClass: array[0..1] of Word;
+    OKTitle: array[0..2] of WideChar;
+    OKCD: Integer;
+    Cancel: TDlgItemTemplate;
+    CancelClass: array[0..1] of Word;
+    CancelTitle: array[0..6] of WideChar;
+    CancelCD: Integer;
+  end = (
+    Dlg: (
+      style: DS_3DLOOK or DS_CENTER or DS_SETFONT or DS_MODALFRAME or WS_SYSMENU;
+      dwExtendedStyle: 0;
+      cdit: 4;
+      x: 0;
+      y: 0;
+      cx: 140;
+      cy: 58);
+    DlgVLA: (0, 0, 0);
+    DlgFont: (#10, 'M', 'S', ' ', 'S', 'a', 'n', 's', ' ', 'S', 'e', 'r', 'i', 'f', #0, #0); 
+    Prompt: (
+      style: WS_CHILD or WS_VISIBLE;
+      dwExtendedStyle: WS_EX_TRANSPARENT;
+      x: 5;
+      y: 5;
+      cx: 130;
+      cy: 8;
+      id: ID_PROMPT);
+    PromptVLA: ($FFFF, $0082, 0);
+    PromptCD: 0;
+    Edit: (
+      style: WS_CHILD or WS_VISIBLE or ES_AUTOHSCROLL or WS_TABSTOP;
+      dwExtendedStyle: WS_EX_CLIENTEDGE;
+      x: 5;
+      y: 15;
+      cx: 130;
+      cy: 11;
+      id: ID_EDIT);
+    EditVLA: ($FFFF, $0081, 0);
+    EditCD: 0;
+    OK: (
+      style: WS_VISIBLE or WS_CHILD or BS_PUSHBUTTON or BS_DEFPUSHBUTTON or WS_TABSTOP;
+      dwExtendedStyle: 0;
+      x: 50;
+      y: 30;
+      cx: 40;
+      cy: 12;
+      id: ID_BTNOK);
+    OKClass: ($FFFF, $0080);
+    OKTitle: ('O', 'K', #0);
+    OKCD: 0;
+    Cancel: (
+      style: WS_VISIBLE or WS_CHILD or BS_PUSHBUTTON or WS_TABSTOP;
+      dwExtendedStyle: 0;
+      x: 95;
+      y: 30;
+      cx: 40;
+      cy: 12;
+      id: ID_BTNCANCEL);
+    CancelClass: ($FFFF, $0080);
+    CancelTitle: ('C', 'a', 'n', 'c', 'e', 'l', #0);
+    CancelCD: 0
+  );
 var
-  Form: TForm;
-  Prompt: TLabel;
-  Edit: TEdit;
-  Button1, Button2: TButton;
-  s: String;
-
-  procedure Button1_Click;
-  begin
-   s := Edit.Text ;
-   Result := True;
-   Form.Close ;
-  end;
-
-  procedure Button2_Click;
-  begin
-   Result := False;
-   Form.Close ;
-  end;
-
-//  function Form_Close:Boolean;
-//  begin
-   //Result := False;
-//   Value := s;
-//  end;
-
+  Params: TParams;
 begin
-  if Application=nil then
-   begin
-    Form := TForm.Create(nil, ACaption);
-    Form.BorderStyle := bsDialog ;
-    Form.SetSize(276, 127);
-//    Form.OnClose := TOnREvent(NewEvent(@Form_Close));
-
-    Prompt := TLabel.Create(Form, APrompt);
-    Prompt.SetBounds(13, 13, 266, 15);
-
-    Edit := TEdit.Create(Form, Value);
-    Edit.SetBounds(13, 30, 245, 21);
-
-    Button1 := TButton.Create(Form, 'OK');
-    Button1.SetPosition(56, 67);
-    Button1.OnClick := TOnEvent(NewEvent(@Button1_Click));
-
-    Button2 := TButton.Create(Form, 'Cancel');
-    Button2.SetPosition(138, 67);
-    Button2.OnClick := TOnEvent(NewEvent(@Button2_Click));
-
-    Form.Run ;
-   end;
-end;}
-
-function InputQuery(AParent: TWinControl; const ACaption, APrompt: string; var Value: string): Boolean;
-var
-  Form: TForm;
-  Prompt: TLabel;
-  Edit: TEdit;
-  Button1, Button2: TButton;
-  s: String;
-
-  procedure Button1_Click;
+  with Params do
   begin
-   Value := Edit.Text;
-   Result := True;
-   Form.Close;
+    Caption := ACaption;
+    Prompt := APrompt;
+    Result := Value;
   end;
-
-  procedure Button2_Click;
-  begin
-   Result:=False;
-   Value:='';
-   Form.Close;
-  end;
-
-begin
-//  if Application=nil then
-//   begin
-    Form := TForm.Create(AParent, ACaption{, False});
-    Form.BorderStyle := bsDialog ;
-    Form.SetSize(276, 127);
-//    Form.OnClose := TOnREvent(NewEvent(@Form_Close));
-
-    Prompt := TLabel.Create(Form, APrompt);
-    Prompt.SetBounds(13, 13, 266, 15);
-
-    Edit := TEdit.Create(Form, Value);
-    Edit.SetBounds(13, 30, 245, 21);
-
-    Button1 := TButton.Create(Form, 'OK');
-    Button1.SetPosition(56, 67);
-    Button1.OnClick := TOnEvent(NewEvent(@Button1_Click));
-
-    Button2 := TButton.Create(Form, 'Cancel');
-    Button2.SetPosition(138, 67);
-    Button2.OnClick := TOnEvent(NewEvent(@Button2_Click));
-
-    Form.ShowModal;
-    WaitForSingleObject(Form.Handle, INFINITE);
-//   end;
+  Result := DialogBoxIndirectParam(hInstance, DlgTemplate.Dlg, AParent, @DlgProc, Longint(@Params)) = ID_OK;
+  if Result then
+    Value := Params.Result;
 end;
 
 function SysErrorMessage(ErrorCode: Integer): string;
