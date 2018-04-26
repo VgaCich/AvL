@@ -73,6 +73,7 @@ function FileAttributesToStr(Attributes: Integer): string;
 function DateTimeToUnix(const AValue: TDateTime): Int64;
 function UnixToDateTime(const AValue: Int64): TDateTime;
 function LerpColor(A, B: TColor; F: Single): TColor;
+function MakeMethod(Func: Pointer; Data: Pointer = nil): TMethod;
 
 implementation
 
@@ -850,6 +851,12 @@ begin
   F1 := 256 - F2;
   Result := (((((A and M1) * F1) + ((B and M1) * F2)) shr 8) and M1) or
             (((((A and M2) * F1) + ((B and M2) * F2)) shr 8) and M2);
+end;
+
+function MakeMethod(Func: Pointer; Data: Pointer = nil): TMethod;
+begin
+  Result.Code := Func;
+  Result.Data:= Data;
 end;
 
 end.
