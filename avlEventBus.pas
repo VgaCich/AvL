@@ -18,11 +18,13 @@ type
     destructor Destroy; override;
     function RegisterEvent(const EventName: string): Integer;
     function GetEventId(const EventName: string): Integer;
+    procedure ClearEvents;
     function AddListener(EventId: Integer; Listener: TEventHandler): Boolean; overload;
     function AddListener(const EventName: string; Listener: TEventHandler): Boolean; overload;
     procedure RemoveListener(Listener: TEventHandler);
     procedure RemoveListeners(const Listeners: array of TEventHandler);
-    function SendEvent(EventId: Integer; Sender: TObject; const Args: array of const): Boolean;
+    function SendEvent(EventId: Integer; Sender: TObject; const Args: array of const): Boolean; overload;
+    function SendEvent(const EventName: string; Sender: TObject; const Args: array of const): Boolean; overload;
   end;
 
 var
@@ -34,7 +36,7 @@ implementation
 
 destructor TEventBus.Destroy;
 begin
-  Finalize(FEvents);
+  ClearEvents;
   inherited;
 end;
 
@@ -57,6 +59,16 @@ end;
 function TEventBus.AddListener(const EventName: string; Listener: TEventHandler): Boolean;
 begin
   Result := AddListener(GetEventId(EventName), Listener);
+end;
+
+procedure TEventBus.ClearEvents;
+begin
+  Finalize(FEvents);
+end;
+
+function TEventBus.Compare(L1, L2: TEventHandler): Boolean;
+begin
+  Result := (TMethod(L1).Code = TMethod(L2).Code) and (TMethod(L1).Data = TMethod(L2).Data);
 end;
 
 function TEventBus.GetEventId(const EventName: string): Integer;
@@ -121,9 +133,9 @@ begin
   Result := true;
 end;
 
-function TEventBus.Compare(L1, L2: TEventHandler): Boolean;
+function TEventBus.SendEvent(const EventName: string; Sender: TObject; const Args: array of const): Boolean;
 begin
-  Result := (TMethod(L1).Code = TMethod(L2).Code) and (TMethod(L1).Data = TMethod(L2).Data);
+  SendEvent(GetEventId(EventName), Sender, Args);
 end;
 
 initialization
