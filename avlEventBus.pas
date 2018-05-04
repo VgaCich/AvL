@@ -79,12 +79,9 @@ begin
 end;
 
 function TEventBus.RegisterEvent(const EventName: string): Integer;
-var
-  i: Integer;
 begin
-  Result := -1;
-  for i := 0 to High(FEvents) do
-    if FEvents[i].Name = EventName then Exit;
+  for Result := 0 to High(FEvents) do
+    if FEvents[Result].Name = EventName then Exit;
   Result := Length(FEvents);
   SetLength(FEvents, Result + 1);
   FEvents[Result].Name := EventName;
@@ -135,7 +132,7 @@ end;
 
 function TEventBus.SendEvent(const EventName: string; Sender: TObject; const Args: array of const): Boolean;
 begin
-  SendEvent(GetEventId(EventName), Sender, Args);
+  Result := SendEvent(GetEventId(EventName), Sender, Args);
 end;
 
 initialization
