@@ -5568,7 +5568,7 @@ begin
     AMsg.WParam := WParam;
     AMsg.LParam := LParam;
     AMsg.Result := 0;
-    TForm(self_).ProcessMessage(AMsg);
+    TWinControl(self_).ProcessMessage(AMsg);
    end
   else
    begin
