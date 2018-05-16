@@ -2,6 +2,9 @@ unit LeakDetect;
 
 interface
 
+var
+  LeakMessageEnabled: Boolean = true;
+
 implementation
 
 uses
@@ -19,7 +22,7 @@ finalization
 
   HPF:=GetHeapStatus;
   Str(HPF.TotalAllocated - HPS.TotalAllocated, S);
-  if HPS.TotalAllocated <> HPF.TotalAllocated then
+  if LeakMessageEnabled and (HPS.TotalAllocated <> HPF.TotalAllocated) then
     MessageBox(0, PChar('Memory leak detected: ' + S + ' bytes leaked'), 'Warning', MB_ICONEXCLAMATION);
 
 end.
