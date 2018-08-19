@@ -573,25 +573,21 @@ end;
 
 function SizeToStr(Size: Int64): string;
 const
-  KB=$400;
-  MB=$100000;
-  GB=$40000000;
-  TB=$10000000000;
-  BS=' Bytes';
-  KBS=' KB';
-  MBS=' MB';
-  GBS=' GB';
-  TBS=' TB';
+  Names: array[0..4] of string = (' B', ' KB', ' MB', ' GB', ' TB');
+var
+  i, r: Integer;
 begin
-  Result:=IntToStr(Size)+BS;
-  if Size>=KB
-    then Result:=FloatToStr2(Size/KB, 1, 2)+KBS;
-  if Size>=MB
-    then Result:=FloatToStr2(Size/MB, 1, 2)+MBS;
-  if Size>=GB
-    then Result:=FloatToStr2(Size/GB, 1, 2)+GBS;
-  if Size>=TB
-    then Result:=FloatToStr2(Size/TB, 1, 2)+TBS;
+  i := 0;
+  while (i < High(Names)) and (Size > 1023) do
+  begin
+    r := Size mod 1024;
+    Size := Size div 1024;
+    Inc(i);
+  end;
+  Result := IntToStr(Size);
+  if (i > 0) and (Length(Result) < 3) then
+    Result := Result + Copy(FloatToStr2(r / 1024, 1, 3 - Length(Result)), 2, MaxInt);
+  Result := Result + Names[i];
 end;
 
 function EtaToStr(Left, Speed: Int64): string;
