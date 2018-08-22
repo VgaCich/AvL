@@ -1673,7 +1673,7 @@ type
  TMenu = class
   private
    FHandle: hMenu;
-   FParentHandle: Integer;
+   FParentHandle, FTag: Integer;
    Adder: Integer;
   public
    constructor Create(AParent: TWinControl; MainMenu: Boolean; const Template: array of PChar);
@@ -1682,6 +1682,7 @@ type
    procedure AddItem(S: String; I: Integer);
    property Handle: hMenu read FHandle write FHandle;
    property ParentHandle: Integer read FParentHandle write FParentHandle;
+   property Tag: Integer read FTag write FTag;
  end;
 
  TWinControl = class//(TControl)

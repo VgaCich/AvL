@@ -129,6 +129,13 @@ function _json_parse_ex(const Settings: TJsonSettings; Json: PChar; Length: Card
 procedure _json_value_free(Value: PJsonValue); cdecl; external;
 procedure _json_value_free_ex(const Settings: TJsonSettings; Value: PJsonValue); cdecl; external;
 
+function DummyValue(Value: PJsonValue): PJsonValue;
+begin
+  Result := _calloc(1, SizeOf(TJsonValue));
+  Result.Parent := Value.Parent;
+  Result.VType := jtInteger;
+end;
+
 function JsonParse(Json: PChar; Length: Cardinal): PJsonValue;
 begin
   Result := _json_parse(Json, Length);
@@ -260,7 +267,7 @@ begin
   if Assigned(P) then
   begin
     Result := P^;
-    P^ := nil;
+    P^ := DummyValue(Result);
   end
   else
     Result := nil;
@@ -274,7 +281,7 @@ begin
   if Assigned(P) then
   begin
     Result := P^;
-    P^ := nil;
+    P^ := DummyValue(Result);
   end
   else
     Result := nil;
