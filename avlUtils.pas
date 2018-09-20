@@ -586,7 +586,7 @@ begin
   end;
   Result := IntToStr(Size);
   if (i > 0) and (Length(Result) < 3) then
-    Result := Result + Copy(FloatToStr2(r / 1024, 1, 3 - Length(Result)), 2, MaxInt);
+    Result := Copy(FloatToStr2(Size + r / 1024, 1, 3), 1, 4);
   Result := Result + Names[i];
 end;
 
