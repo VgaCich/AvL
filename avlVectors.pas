@@ -43,8 +43,10 @@ procedure VectorClear(var Vector: TVector2D); overload;
 procedure VectorClear(var Vector: TVector3D); overload;
 procedure VectorClear(var Vector: TVector4D); overload;
 procedure VectorInvert(var Vector: TVector3D);
-function VectorSize(const Vector: TVector3D): Single;
-function VectorNormalize(var Vector: TVector3D): Single;
+function VectorSize(const Vector: TVector2D): Single; overload;
+function VectorSize(const Vector: TVector3D): Single; overload;
+function VectorNormalize(var Vector: TVector2D): Single; overload;
+function VectorNormalize(var Vector: TVector3D): Single; overload;
 function VectorSquareNorm(const Vector: TVector3D): Single;
 function VectorAdd(const Vector1, Vector2: TVector3D): TVector3D; overload;
 procedure VectorAdd(var Vector: TVector3D; Value: Single); overload;
@@ -147,6 +149,11 @@ begin
   Vector.Z := -Vector.Z;
 end;
 
+function VectorSize(const Vector: TVector2D): Single;
+begin
+  Result := Sqrt((Vector.X * Vector.X) + (Vector.Y * Vector.Y));
+end;
+
 function VectorSize(const Vector: TVector3D): Single;
 begin
   Result := Sqrt((Vector.X * Vector.X) + (Vector.Y * Vector.Y) + (Vector.Z * Vector.Z));
@@ -166,12 +173,20 @@ begin
   Vector.Z := Vector.Z * ScaleFactor;
 end;}
 
+function VectorNormalize(var Vector: TVector2D): Single;
+begin
+  Result := VectorSize(Vector);
+  if (Result = 0.0) then
+    Exit;
+  Vector.X := Vector.X / Result;
+  Vector.Y := Vector.Y / Result;
+end;
+
 function VectorNormalize(var Vector: TVector3D): Single;
 begin
   Result := VectorSize(Vector);
   if (Result = 0.0) then
     Exit;
-
   Vector.X := Vector.X / Result;
   Vector.Y := Vector.Y / Result;
   Vector.Z := Vector.Z / Result;
