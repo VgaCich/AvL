@@ -74,6 +74,9 @@ function DateTimeToUnix(const AValue: TDateTime): Int64;
 function UnixToDateTime(const AValue: Int64): TDateTime;
 function LerpColor(A, B: TColor; F: Single): TColor;
 function MakeMethod(Func: Pointer; Data: Pointer = nil): TMethod;
+function FileOpenW(const FileName: WideString; Mode: LongWord): Integer;
+function FileCreateW(const FileName: WideString): Integer;
+function FileSeek64(Handle: THandle; Offset: Int64; Origin: Integer): Int64;
 
 implementation
 
@@ -853,6 +856,51 @@ function MakeMethod(Func: Pointer; Data: Pointer = nil): TMethod;
 begin
   Result.Code := Func;
   Result.Data:= Data;
+end;
+
+function FileOpenW(const FileName: WideString; Mode: LongWord): Integer;
+const
+  AccessMode: array[0..2] of LongWord = (
+    GENERIC_READ,
+    GENERIC_WRITE,
+    GENERIC_READ or GENERIC_WRITE);
+  ShareMode: array[0..4] of LongWord = (
+    0,
+    0,
+    FILE_SHARE_READ,
+    FILE_SHARE_WRITE,
+    FILE_SHARE_READ or FILE_SHARE_WRITE);
+  OpenMode : array[0..1] of LongWord = (
+    OPEN_EXISTING,
+    TRUNCATE_EXISTING);
+begin
+  Result := CreateFileW(PWideChar(FileName),
+                       AccessMode[Mode and 3],
+                       ShareMode[(Mode and $F0) shr 4],
+                       nil,
+                       OpenMode[(Mode and 4) shr 2],
+                       FILE_ATTRIBUTE_NORMAL,
+                       0);
+end;
+
+function FileCreateW(const FileName: WideString): Integer;
+begin
+  Result := CreateFileW(PWideChar(FileName),
+                       GENERIC_READ or GENERIC_WRITE,
+                       0,
+                       nil,
+                       CREATE_ALWAYS,
+                       FILE_ATTRIBUTE_NORMAL,
+                       0);
+end;
+
+function FileSeek64(Handle: THandle; Offset: Int64; Origin: Integer): Int64;
+var
+  Offs: LARGE_INTEGER;
+begin
+  Offs.QuadPart := Offset;
+  Offs.LowPart := SetFilePointer(THandle(Handle), Offs.LowPart, @Offs.HighPart, Origin);
+  Result := Offs.QuadPart;
 end;
 
 end.

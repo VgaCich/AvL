@@ -252,9 +252,9 @@ const
 
   { TStream seek origins }
 
-  soFromBeginning = 0;
-  soFromCurrent = 1;
-  soFromEnd = 2;  
+  soFromBeginning = FILE_BEGIN;
+  soFromCurrent = FILE_CURRENT;
+  soFromEnd = FILE_END;  
 
   { TFileStream create mode }
 
