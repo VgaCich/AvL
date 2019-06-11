@@ -11909,9 +11909,9 @@ begin
   Temp := Integer(Item1^.FString);
   Integer(Item1^.FString) := Integer(Item2^.FString);
   Integer(Item2^.FString) := Temp;
-{  Temp := Integer(Item1^.FObject);
+  Temp := Integer(Item1^.FObject);
   Integer(Item1^.FObject) := Integer(Item2^.FObject);
-  Integer(Item2^.FObject) := Temp;  }
+  Integer(Item2^.FObject) := Temp; 
 end;
 
 procedure TStringList.QuickSort(L, R: Integer; SCompare: TStringListSortCompare);
