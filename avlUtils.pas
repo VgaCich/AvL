@@ -15,6 +15,7 @@ function StrCat(Dest, Source: PChar): PChar;
 function ChangeFileExt(const FileName, Extension: string): string;
 function FirstDelimiter(const Delimiters, S: String): Integer;
 function PosEx(const SubStr, S: string; Offset: Cardinal = 1): Integer;
+function CeilPOT(X: Cardinal): Cardinal;
 function TryStrToInt(const S: string; out Value: Integer): Boolean;
 function TryStrToFloat(const S: string; out Value: Single): Boolean;
 function StrToCar(const S: string): Cardinal;
@@ -197,6 +198,17 @@ begin
     end;
     Result := 0;
   end;
+end;
+
+function CeilPOT(X: Cardinal): Cardinal;
+begin
+  Result := X - 1;
+  Result := Result or (Result shr 1);
+  Result := Result or (Result shr 2);
+  Result := Result or (Result shr 4);
+  Result := Result or (Result shr 8);
+  Result := Result or (Result shr 16);
+  Inc(Result);
 end;
 
 function TryStrToInt(const S: string; out Value: Integer): Boolean;

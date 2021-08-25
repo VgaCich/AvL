@@ -2,9 +2,6 @@ unit avlEventBus;
 
 interface
 
-uses
-  AvL;
-
 type
   TEventHandler = procedure(Sender: TObject; const Args: array of const) of object;
   TEventBus = class
@@ -139,6 +136,7 @@ initialization
   EventBus := TEventBus.Create;
 
 finalization
-  FreeAndNil(EventBus);
+  EventBus.Free;
+  EventBus := nil;
 
 end.
