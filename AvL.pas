@@ -2338,6 +2338,7 @@ type
     FTabStyle: TTabStyle;
     FImages: TImageList;
     FTabPosition: TTabPosition;
+    function GetClientRect: TRect;
     function GetTabIndex: Integer;
     procedure SetTabIndex(const Value: Integer);
     procedure SetTabStyle(const Value: TTabStyle);
@@ -2345,14 +2346,13 @@ type
     procedure SetTabPosition(const Value: TTabPosition);
   public
    constructor Create(AParent : TWinControl);
-
    function TabAdd(Caption: String): Integer ;
    function TabCount: Integer;
    function TabDelete(Index: Integer): Boolean;
    property TabIndex: Integer read GetTabIndex write SetTabIndex;
    function TabInsert(Caption: String; Index:Integer): Integer;
+   property ClientRect: TRect read GetClientRect;
    procedure TabImageIndex(TabIndex, ImageIndex: Integer);
-
    property Images: TImageList read FImages write SetImages;
    property Style: TTabStyle read FTabStyle write SetTabStyle default tsTabs;
    property TabPosition: TTabPosition read FTabPosition write SetTabPosition default tpTop;
@@ -16189,6 +16189,12 @@ begin
   { Seek to first frame }
   Perform(ACM_PLAY, 1, MakeLong(FStartFrame - 1, FStartFrame - 1));
   FActive := False;
+end;
+
+function TTabControl.GetClientRect: TRect;
+begin
+  Windows.GetClientRect(Handle, Result);
+  Perform(TCM_ADJUSTRECT, 0, Integer(@Result));
 end;
 
 function TTabControl.GetTabIndex: Integer;
