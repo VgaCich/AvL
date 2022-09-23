@@ -29,6 +29,7 @@ unit Avl;
 {$define CtlColor}
 {$define Paint}
 {$define Command}
+{$define Notify}
 {$define Close}
 {$define KeyDown}
 {$define KeyUp}
@@ -1810,6 +1811,7 @@ type
     procedure WMClose(var AMsg: TWMClose);
     procedure WMPaint(var AMsg: TWMPaint); virtual;
     procedure WMCommand(var AMsg : TWMCommand);// virtual;
+    procedure WMNotify(var AMsg: TWMNotify);
     procedure WMCtlColor(var AMsg : TMessage);
     procedure WMDestroy(var AMsg: TWMDestroy);
     procedure WMEraseBkgnd(var AMsg : TWMEraseBkgnd);// virtual;
@@ -5334,6 +5336,7 @@ begin
   {$ifdef Close}WM_CLOSE:             WMClose(TWMClose(AMsg));{$endif}
   {$ifdef Paint}WM_PAINT:             WMPaint(TWMPaint(AMsg));{$endif}
   {$ifdef Command}WM_COMMAND:         WMCommand(TWMCommand(AMsg));{$endif}
+  {$ifdef Notify}WM_NOTIFY:           WMNotify(TWMNotify(AMsg));{$endif}
   {$ifdef CtlColor}$0132..$0138:      WMCtlColor(AMsg);{$endif}
   {$ifdef EraseBkgnd}WM_ERASEBKGND:   WMEraseBkgnd(TWMEraseBkgnd(AMsg));{$endif}
   {$ifdef KeyDown}WM_KEYDOWN:         WMKeyDown(TWMKey(AMsg));{$endif}
@@ -5540,6 +5543,41 @@ begin
           SetWindowPos(Ctrl.Handle, 0, 0, 0, 0, 0, SWP_NOMOVE + SWP_NOSIZE + SWP_NOZORDER + SWP_NOACTIVATE + SWP_NOREDRAW + SWP_SHOWWINDOW);
         end;
      end;   *)
+  end;
+end;
+
+procedure TWinControl.WMNotify(var AMsg: TWMNotify);
+const
+  TVN_SELCHANGED = 0-400-1;
+  LVN_ITEMCHANGED = 0-100-1;
+  LVIF_STATE = $0008;
+  LVIS_SELECTED = $0002;
+type
+  PNMListView = ^TNMListView;
+  TNMListView = packed record
+    hdr: TNMHDR;
+    iItem: Integer;
+    iSubItem: Integer;
+    uNewState: UINT;
+    uOldState: UINT;
+    uChanged: UINT;
+    ptAction: TPoint;
+    lParam: LPARAM;
+  end;
+var
+  ctrl : TWinControl;
+begin
+  Dispatch(AMsg);
+  with AMsg do
+  begin
+    ctrl := TWinControl(GetProp(NMHdr.hwndFrom, App_Id));
+    if ctrl=nil then exit;
+    case NMHdr.code of
+      TCN_SELCHANGE,
+      TVN_SELCHANGED : if Ctrl.FEnabled then ctrl.Change;
+      LVN_ITEMCHANGED: if Ctrl.FEnabled and (PNMListView(NMHdr).uChanged and LVIF_STATE <> 0)
+        and (PNMListView(NMHdr).uNewState and LVIS_SELECTED <> 0) then ctrl.Change;
+    end;
   end;
 end;
 
@@ -6014,24 +6052,26 @@ end;
 
 function TMemo.GetLineStrings(Index: Integer): String; //11.07.03
 var
-  sl: TStringList;
+  ch, len: Integer;
 begin
-  sl := TStringList.Create ;
-  sl.Text := LineText;
-  Result := sl.Strings[Index]; 
-  LineText := sl.Text ;
-  sl.Free ;
+  Result := '';
+  ch := Perform(EM_LINEINDEX, Index, 0);
+  if ch = -1 then Exit;
+  len := Perform(EM_LINELENGTH, ch, 0);
+  if len <= 0 then Exit;
+  SetLength(Result, len + 1);
+  PWord(Result)^ := Length(Result);
+  Perform(EM_GETLINE, Index, Integer(Result));
+  SetLength(Result, len);
 end;
 
 procedure TMemo.SetLineStrings(Index: Integer; const Value: String); //11.07.03
 var
-  sl: TStringList;
+  ch: Integer;
 begin
-  sl := TStringList.Create ;
-  sl.Text := LineText;
-  sl.Strings[Index] := Value; 
-  LineText := sl.Text ;
-  sl.Free ;
+  ch := Perform(EM_LINEINDEX, Index, 0);
+  Perform(EM_SETSEL, ch, ch + Perform(EM_LINELENGTH, ch, 0));
+  Perform(EM_REPLACESEL, 1, Integer(PChar(Value)));
 end;
 
 procedure TMemo.Clear;
@@ -11651,8 +11691,10 @@ end;
 
 function TStringList.Get(Index: Integer): string;
 begin
-  if (Index < 0) or (Index >= FCount) then Exit;
-  Result := FList^[Index].FString;
+  if (Index >= 0) and (Index < FCount) then
+    Result := FList^[Index].FString
+  else
+    Result := '';
 end;
 
 function TStringList.GetCapacity: Integer;
@@ -15071,14 +15113,17 @@ end;
 
 procedure TMemo.LineInsert(Index: Integer; S: String);
 var
-  sl: TStringList;
+  ch: Integer;
 begin
-  sl := TStringList.Create ;
-  sl.Text := LineText;
-  sl.Insert(Index, S);
-  //ShowMessage(sl.Text);
-  LineText := sl.Text ;
-  sl.Free ;
+  ch := Perform(EM_LINEINDEX, Index, 0);
+  if ch <> -1 then
+  begin
+    S := S + CRLF;
+    Perform(EM_SETSEL, ch, ch);
+    Perform(EM_REPLACESEL, 1, Integer(PChar(S)));
+  end
+  else
+    LineAdd(S);
 end;
 
 function TMemo.Undo: Boolean;
