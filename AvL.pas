@@ -2189,7 +2189,6 @@ type
     function GetItemIndex: Integer;
     procedure SetItemIndex(const Value: Integer);
     function GetItem(ItemIndex: Integer): String;
-    procedure SetItem(ItemIndex: Integer; const Value: String);
 //  protected
 //    procedure DoMouseDown(var AMsg: TWMMouse; Button: TMouseButton; Shift: TShiftState);// override;
 //    procedure WMDRAWITEM(var AMsg: TWmDrawItem); message WM_DRAWITEM;
@@ -2198,12 +2197,13 @@ type
 
     procedure Clear; 
 
-    function  ItemAdd(const S: shortstring): Integer;
+    function  ItemAdd(const S: string): Integer;
+    function ItemInsert(const S: string; ItemIndex: Integer): Integer;
     function  ItemCount: Integer;
     procedure ItemDelete(ItemIndex: Integer);
 
     property DroppedDown: Boolean read GetDroppedDown write SetDroppedDown;
-    property Items[ItemIndex: Integer]: String read GetItem write SetItem;    
+    property Items[ItemIndex: Integer]: String read GetItem;    
     property ItemIndex: Integer read GetItemIndex write SetItemIndex;
     property Text;
  end;
@@ -2256,7 +2256,8 @@ type
     property Caption;
  end;
 
- TSimplePanel = class(TWinControl)
+  //Border: 1: DlgFrame; 2: None; 3: Sunken
+  TSimplePanel = class(TWinControl)
   private
     FBorder: Integer;
     procedure SetBorder(const Value: Integer);
@@ -13239,9 +13240,21 @@ end;
 procedure TSimplePanel.SetBorder(const Value: Integer);
 begin
   FBorder := Value;
-  if Value = 1 then SetStyle(FStyle or WS_DLGFRAME);
-  if Value = 2 then SetStyle(FStyle and not WS_DLGFRAME and not SS_SUNKEN);
-  if Value = 3 then SetStyle(FStyle or not WS_DLGFRAME and SS_SUNKEN);
+  if Value = 1 then
+  begin
+    SetStyle(FStyle or WS_DLGFRAME);
+    SetExStyle(FExStyle or WS_EX_STATICEDGE);
+  end
+  else if Value = 2 then
+  begin
+    SetStyle(FStyle and not WS_DLGFRAME and not SS_SUNKEN);
+    SetExStyle(FExStyle and not WS_EX_STATICEDGE);
+  end
+  else if Value = 3 then
+  begin
+    SetStyle(FStyle or not WS_DLGFRAME and SS_SUNKEN);
+    SetExStyle(FExStyle or WS_EX_STATICEDGE);
+  end;
 end;
 
 { TGroupBox }
@@ -13602,13 +13615,15 @@ begin
   Perform(CB_SHOWDROPDOWN, Longint(Value), 0);
 end;
 
-function TComboBox.ItemAdd(const S: shortstring): Integer;
-var
-  ss : array [1..256] of Char;
+function TComboBox.ItemAdd(const S: string): Integer;
 begin
-  Move(s[1], ss[1], Ord(s[0]));
-  ss[Ord(s[0])+1] := #0;
-  Result := Perform(CB_ADDSTRING, 0, Longint(@ss));
+  Result := Perform(CB_ADDSTRING, 0, Longint(PChar(S)));
+  UpdateHeight;
+end;
+
+function TComboBox.ItemInsert(const S: string; ItemIndex: Integer): Integer;
+begin
+  Result := Perform(CB_INSERTSTRING, ItemIndex, Longint(PChar(S)));
   UpdateHeight;
 end;
 
@@ -13648,16 +13663,9 @@ begin
 end;
 
 function TComboBox.GetItem(ItemIndex: Integer): String;
-var
-  Text: ShortString;
 begin
-  Text[0] := Chr(Perform(CB_GETLBTEXT, ItemIndex, Longint(@Text[1])));
-  Result := Text;
-end;
-
-procedure TComboBox.SetItem(ItemIndex: Integer; const Value: String);
-begin
-
+  SetLength(Result, Perform(CB_GETLBTEXTLEN, ItemIndex, 0));
+  SetLength(Result, Perform(CB_GETLBTEXT, ItemIndex, Longint(PChar(Result))));
 end;
 
 (*procedure TComboBox.WMDRAWITEM(var AMsg: TWmDrawItem);
