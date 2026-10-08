@@ -93,7 +93,7 @@ unit Avl;
 
   Если Вас устраивают стандартный шрифт то не создавайте Font, тогда Вы
   сэкономите ~ 0.5 Кб ;)
-  
+
 ------------------------------------------------------------------------------}
 
 interface
@@ -255,7 +255,7 @@ const
 
   soFromBeginning = FILE_BEGIN;
   soFromCurrent = FILE_CURRENT;
-  soFromEnd = FILE_END;  
+  soFromEnd = FILE_END;
 
   { TFileStream create mode }
 
@@ -398,9 +398,9 @@ const
 
   { TRichEdit }
 
-  EM_EXLIMITTEXT                      = WM_USER + 53; 
+  EM_EXLIMITTEXT                      = WM_USER + 53;
   EM_SETBKGNDCOLOR                    = WM_USER + 67;
-  EM_REDO                             = WM_USER + 84; 
+  EM_REDO                             = WM_USER + 84;
   EM_CANREDO                          = WM_USER + 85;
 
   { TTrackBar }
@@ -425,7 +425,7 @@ const
 
   TBM_SETPOS              = WM_USER+5;  // +
   TBM_SETRANGEMIN         = WM_USER+7;  // +
-  TBM_SETRANGEMAX         = WM_USER+8;  // +  
+  TBM_SETRANGEMAX         = WM_USER+8;  // +
 
   { TProgressBar }
 
@@ -440,10 +440,10 @@ const
 
   REFRESH_PERIOD : Cardinal = 1;
 
-  UDS_SETBUDDYINT         = $0002;  
+  UDS_SETBUDDYINT         = $0002;
 
   UDN_FIRST                = 0-721;
-  UDN_DELTAPOS            = UDN_FIRST-1;    
+  UDN_DELTAPOS            = UDN_FIRST-1;
 
   UDM_SETRANGE            = WM_USER+101;
   UDM_GETRANGE            = WM_USER+102;
@@ -561,7 +561,7 @@ const
   LVM_FIRST               = $1000;      { ListView messages }
 
   {$EXTERNALSYM LVM_GETITEMCOUNT}
-  LVM_GETITEMCOUNT        = LVM_FIRST + 4;  
+  LVM_GETITEMCOUNT        = LVM_FIRST + 4;
 
   {$EXTERNALSYM LVM_INSERTCOLUMNA}
   LVM_INSERTCOLUMNA        = LVM_FIRST + 27;
@@ -592,7 +592,7 @@ const
 
   LVN_FIRST                = 0-100;       { listview }
   LVN_ITEMCHANGED         = LVN_FIRST-1;
-  LVN_KEYDOWN             = LVN_FIRST-55;  
+  LVN_KEYDOWN             = LVN_FIRST-55;
 
 //nextitem
 
@@ -684,7 +684,7 @@ const
   LVIS_FOCUSED            = $0001;
   LVIS_SELECTED           = $0002;
   LVIS_CUT                = $0004;
-  LVIS_DROPHILITED        = $0008;  
+  LVIS_DROPHILITED        = $0008;
 
   { TImageList }
 
@@ -712,7 +712,7 @@ const
   LVSIL_SMALL             = 1;
   LVSIL_STATE             = 2;
 
-  LVM_SETIMAGELIST        = LVM_FIRST + 3;  
+  LVM_SETIMAGELIST        = LVM_FIRST + 3;
 
   { THeaderControl }
 
@@ -729,7 +729,7 @@ const
 
   HDF_LEFT                = 0;
 
-  HDM_FIRST               = $1200;      { Header messages }  
+  HDM_FIRST               = $1200;      { Header messages }
   HDM_GETITEMCOUNT        = HDM_FIRST + 0;
   HDM_INSERTITEM          = HDM_FIRST + 1;
   HDM_DELETEITEM          = HDM_FIRST + 2;
@@ -807,12 +807,12 @@ const
   TB_BUTTONCOUNT          = WM_USER + 24;
   TB_ADDSTRING            = WM_USER + 28;
   TB_BUTTONSTRUCTSIZE     = WM_USER + 30;
-  TB_AUTOSIZE             = WM_USER + 33;  
+  TB_AUTOSIZE             = WM_USER + 33;
   TB_CHANGEBITMAP         = WM_USER + 43;
   TB_GETBUTTONTEXT        = WM_USER + 45;
   TB_SETINDENT            = WM_USER + 47;
   TB_SETIMAGELIST         = WM_USER + 48;
-  
+
   { TFontDialog }
 
   {$EXTERNALSYM CF_SCREENFONTS}
@@ -882,7 +882,7 @@ const
   NIF_MESSAGE     = $00000001;
   NIF_ICON        = $00000002;
   NIF_TIP         = $00000004;
-  
+
 type
   _NOTIFYICONDATAA = record
     cbSize: DWORD;
@@ -969,7 +969,7 @@ type
     ADriver  : PChar;
     APort    : PChar;
     ADevMode : THandle;
-  end;  
+  end;
 
 resourcestring     { From SysConst.pas }
   SUnknown = '<unknown>';
@@ -1020,7 +1020,7 @@ resourcestring     { From SysConst.pas }
   SExternalException = 'External exception %x';
   SAssertionFailed = 'Assertion failed';
   SIntfCastError = 'Interface not supported';
-  SSafecallException = 'Exception in safecall method'; 
+  SSafecallException = 'Exception in safecall method';
   SAssertError = '%s (%s, line %d)';
   SAbstractError = 'Abstract Error';
   SModuleAccessViolation = 'Access violation at address %p in module ''%s''. %s of address %p';
@@ -1226,7 +1226,7 @@ type
     function Write(const Buffer; Count: Longint): Longint; override;
     procedure WriteString(const AString: string);
     property DataString: string read FDataString;
-  end;  
+  end;
 
 { TResourceStream }
 
@@ -1238,7 +1238,7 @@ type
   public
     constructor Create(Instance: THandle; const ResName: string; ResType: PChar);
     constructor CreateFromID(Instance: THandle; ResID: Integer; ResType: PChar);
-    destructor Destroy; override;    
+    destructor Destroy; override;
   end;
 
 { Duplicate management }
@@ -1253,7 +1253,7 @@ type
  TList = class
  private
 //   FAddBy: Integer;
-   FCapacity: Integer; 
+   FCapacity: Integer;
    FCount: Integer;
    FItems: PPointerList;
    function Get(Idx: Integer): Pointer;
@@ -1266,10 +1266,10 @@ type
    procedure Clear;
    procedure Delete(Idx: Integer);
    function IndexOf(Value: Pointer): Integer;
-   procedure Insert(Index: Integer; Value: Pointer);   
+   procedure Insert(Index: Integer; Value: Pointer);
    function First: Pointer;
    function Last: Pointer;
-   procedure Pack;   
+   procedure Pack;
    function Remove(Item: Pointer): Integer;
 
    property Capacity: Integer read FCapacity write SetCapacity;
@@ -1293,22 +1293,22 @@ type
     procedure Remove(Item: Pointer);
     procedure UnlockList;
     property Duplicates: TDuplicates read FDuplicates write FDuplicates;
-  end; 
+  end;
 
  { TStringList }
 
   TStringList = class;
-  
+
   PStringItem = ^TStringItem;
   TStringItem = record
     FString: string;
     FObject: TObject;
   end;
-  
+
   PStringItemList = ^TStringItemList;
   TStringItemList = array[0..MaxListSize] of TStringItem;
 
-  TStringListSortCompare = function(List: TStringList; Index1, Index2: Integer): Integer;  
+  TStringListSortCompare = function(List: TStringList; Index1, Index2: Integer): Integer;
 
   TStringList = class
   private
@@ -1330,7 +1330,7 @@ type
     function GetValue(const Name: string): string;
     procedure SetValue(const Name, Value: string); //virtual; abstract;
   protected
-    function GetCount: Integer;  
+    function GetCount: Integer;
     function GetObject(Index: Integer): TObject; virtual;
     function Get(Index: Integer): string;
     procedure Put(Index: Integer; const Value: string);
@@ -1339,28 +1339,28 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-    procedure Assign(Strings: TStringList);    
+    procedure Assign(Strings: TStringList);
     function Add(const S: string): Integer;// override;
     function AddObject(const S: string; Obj: TObject): Integer;
     property Capacity: Integer read GetCapacity write SetCapacity;
     procedure Changed; virtual;
-    procedure Clear; //override;    
+    procedure Clear; //override;
     property Count: Integer read GetCount;
     property Duplicates: TDuplicates read FDuplicates write FDuplicates;
     function IndexOf(const S: string): Integer;
-    procedure Insert(Index: Integer; const S: string);    
-    function IndexOfName(const Name: string): Integer;    
-    property Values[const Name: string]: string read GetValue write SetValue;         
+    procedure Insert(Index: Integer; const S: string);
+    function IndexOfName(const Name: string): Integer;
+    property Values[const Name: string]: string read GetValue write SetValue;
     property Strings[Index: Integer]: string read Get write Put; default;
     property Objects[Index: Integer]: TObject read GetObject write PutObject;
     procedure LoadFromFile(const FileName: string); virtual;
     procedure LoadFromStream(Stream: TStream); virtual;
     procedure SaveToFile(const FileName: string); virtual;
-    procedure SaveToStream(Stream: TStream); virtual;        
+    procedure SaveToStream(Stream: TStream); virtual;
     property Text: string read GetTextStr write SetTextStr;
     procedure Delete(Index: Integer);
     procedure Sort; //virtual;
-    procedure CustomSort(Compare: TStringListSortCompare);    
+    procedure CustomSort(Compare: TStringListSortCompare);
     property Sorted: Boolean read FSorted write SetSorted;
     property OnChange: TOnEvent read FOnChange write FOnChange;
   end;
@@ -1387,7 +1387,7 @@ type
 
   TPersistentClass = class of TPersistent;
 
-  
+
 
   TWinControl = class ;
   TCanvas = class;
@@ -1410,7 +1410,6 @@ type
      FUnderline,
      FStrikeOut:Integer;
      FColor: TColor;
-     FStyle: TFontStyles;
      FHeight: Integer;
      FWidth: Integer;
      FSize: Integer;
@@ -1428,19 +1427,20 @@ type
     procedure SetCharset(const Value: Byte);
    protected
      FCtrlHandle: THandle;
+     function GetStyle: TFontStyles;
      procedure SetStyle(Value: TFontStyles);
    public
      constructor Create; overload;
      constructor Create(Canvas: TCanvas); overload;
      property Handle: HFont read FHandle write FHandle;
-     property Charset: Byte read FCharset write SetCharset;     
+     property Charset: Byte read FCharset write SetCharset;
      property Color: TColor read FColor write SetColor;
      property Height: Integer read FHeight write SetHeight;
      property Width: Integer read FWidth write SetWidth;
      property Name: String read FName write SetName;
      property Pitch: TFontPitch read GetPitch write SetPitch;
      property Size: Integer read FSize write SetSize;
-     property Style: TFontStyles read FStyle write SetStyle;
+     property Style: TFontStyles read GetStyle write SetStyle;
      property Control:TWinControl read FControl write SetControl;
   end;
 
@@ -1469,10 +1469,10 @@ type
     property Color: TColor read FColor write SetColor;
     property Style: TPenStyle read FStyle write SetStyle default psSolid;
     property Width:Integer read FWidth write SetWidth;
-    property Mode: TPenMode read FMode write SetMode default pmCopy;    
+    property Mode: TPenMode read FMode write SetMode default pmCopy;
  end;
 
- TBrushStyle = (bsSolid, bsClear, bsHorizontal, bsVertical, bsFDiagonal, bsBDiagonal, bsCross, bsDiagCross); 
+ TBrushStyle = (bsSolid, bsClear, bsHorizontal, bsVertical, bsFDiagonal, bsBDiagonal, bsCross, bsDiagCross);
 
  TBrush = class
   private
@@ -1525,12 +1525,12 @@ type
     procedure CopyRect(const Dest: TRect; Canvas: TCanvas; const Source: TRect);
     procedure Ellipse(X1, Y1, X2, Y2: Integer);
     procedure FillRect(const Rect: TRect);
-    procedure FloodFill(X, Y: Integer; Color: TColor; FillStyle: TFillStyle);    
+    procedure FloodFill(X, Y: Integer; Color: TColor; FillStyle: TFillStyle);
     property Handle: hDC read FHandle write FHandle;
     procedure LineTo(X, Y: Integer);
-    procedure Lock;    
+    procedure Lock;
     procedure MoveTo(X, Y: Integer);
-    procedure Pie(X1, Y1, X2, Y2, X3, Y3, X4, Y4: Integer);    
+    procedure Pie(X1, Y1, X2, Y2, X3, Y3, X4, Y4: Integer);
     procedure Polyline(const Points: array of TPoint);
     procedure Rectangle(X1, Y1, X2, Y2: Integer);
     function TextExtent(const Text: string): TSize;
@@ -1598,7 +1598,7 @@ type
     procedure SetPixelFormat(const Value: TPixelFormat);
     function GetScanLine(Y: Integer): Pointer;
     function GetDIBPalEntries(Idx: Integer): TColor;
-    procedure SetDIBPalEntries(Idx: Integer; const Value: TColor);  
+    procedure SetDIBPalEntries(Idx: Integer; const Value: TColor);
     procedure SetHandle(const Value: HBitmap);
     function GetDIBPalEntryCount: Integer;
 //  protected
@@ -1625,10 +1625,10 @@ type
     property BkColor: TColor read FBkColor write SetBkColor;
     property Canvas: TCanvas read GetCanvas;
     property Empty: Boolean read GetEmpty;
-    property Handle: HBitmap read GetHandle write SetHandle;    
+    property Handle: HBitmap read GetHandle write SetHandle;
     property HandleType: TBitmapHandleType read FHandleType write SetHandleType;
     property Height: Integer read FHeight write SetHeight;
-    property PixelFormat: TPixelFormat read GetPixelFormat write SetPixelFormat;    
+    property PixelFormat: TPixelFormat read GetPixelFormat write SetPixelFormat;
     property ScanLineSize: Integer read GetScanLineSize;
     property Width: Integer read FWidth write SetWidth;
 
@@ -1652,7 +1652,7 @@ type
     FSize: TPoint;
 
     procedure HandleNeeded;
-    procedure ImageNeeded;    
+    procedure ImageNeeded;
     function GetHandle: HICON;
     procedure NewImage(NewHandle: HICON; NewImage: TMemoryStream);
     procedure SetHandle(const Value: HICON);
@@ -1664,7 +1664,7 @@ type
     procedure SaveToFile(const Filename: string);
     procedure SaveToStream(Stream: TStream);
 
-    property Handle: HICON read GetHandle write SetHandle;     
+    property Handle: HICON read GetHandle write SetHandle;
   end;
 //----------------
 
@@ -1816,7 +1816,7 @@ type
     procedure WMDestroy(var AMsg: TWMDestroy);
     procedure WMEraseBkgnd(var AMsg : TWMEraseBkgnd);// virtual;
     procedure WMKeyDown(var AMsg: TWMKeyDown);
-    procedure WMKeyUp(var AMsg: TWMKeyUp);    
+    procedure WMKeyUp(var AMsg: TWMKeyUp);
     procedure WMLButtonDown(var AMsg: TWMLButtonDown);
     procedure WMLButtonUp(var AMsg: TWMLButtonUp);
     procedure WMRButtonUp(var AMsg: TWMRButtonUp);
@@ -1830,7 +1830,7 @@ type
     procedure WMSetCursor(var AMsg: TWMSetCursor);
 
     procedure Click; virtual;
-    procedure DblClick; virtual;    
+    procedure DblClick; virtual;
     procedure Change; virtual;
     procedure DoMouseDown(var AMsg: TWMMouse; Button: TMouseButton; Shift: TShiftState);// virtual;
     procedure DoMouseUp(var AMsg: TWMMouse; Button: TMouseButton; Shift: TShiftState);
@@ -1932,7 +1932,7 @@ type
   private
 //    FCanvas: TCanvas;
     procedure WMPaint_(var Message: TWMPaint); message WM_PAINT;
-//    procedure WMNCPAINT(var Msg: TWMNcPaint); message WM_NCPAINT;    
+//    procedure WMNCPAINT(var Msg: TWMNcPaint); message WM_NCPAINT;
   protected
     procedure Paint; virtual;
 //    property Canvas: TCanvas read FCanvas;
@@ -1990,7 +1990,7 @@ type
    property Position:Byte read FPosition write SetFormPosition;
    property WindowState: Integer read GetWindowState write SetWindowState;
 
-   property Caption;   
+   property Caption;
  end;
 
  TMDIForm = class(TForm)
@@ -2098,7 +2098,7 @@ type
     property SelLength;
     property SelText;
     property PasswordChar;
-    property ReadOnly;    
+    property ReadOnly;
     property Text;
  end;
 
@@ -2114,7 +2114,7 @@ type
     property Default: Boolean read FDefault write SetDefault;
     property Flat:Boolean read FFlat write SetFlat;
     property Caption;
- end; 
+ end;
 
  TCheckBox = class(TWinControl)
   private
@@ -2195,7 +2195,7 @@ type
   public
     constructor Create(AParent : TWinControl; Style: TComboBoxStyle);
 
-    procedure Clear; 
+    procedure Clear;
 
     function  ItemAdd(const S: string): Integer;
     function ItemInsert(const S: string; ItemIndex: Integer): Integer;
@@ -2203,7 +2203,7 @@ type
     procedure ItemDelete(ItemIndex: Integer);
 
     property DroppedDown: Boolean read GetDroppedDown write SetDroppedDown;
-    property Items[ItemIndex: Integer]: String read GetItem;    
+    property Items[ItemIndex: Integer]: String read GetItem;
     property ItemIndex: Integer read GetItemIndex write SetItemIndex;
     property Text;
  end;
@@ -2251,7 +2251,7 @@ type
     procedure Paint(DC: HDC);
     procedure SetBevel(const Value: TBevelType);
   public
-    constructor Create(AParent : TWinControl; Caption:String); 
+    constructor Create(AParent : TWinControl; Caption:String);
     property Bevel: TBevelType read FBevel write SetBevel;
     property Caption;
  end;
@@ -2284,7 +2284,7 @@ type
     procedure Click; override;
     //property Default: Boolean read FDefault write SetDefault;
     //property Flat:Boolean read FFlat write SetFlat;
-    property Glyph: hBitmap read fGlyph write SetGlyph; 
+    property Glyph: hBitmap read fGlyph write SetGlyph;
     property Caption;
  end;
 
@@ -2329,7 +2329,7 @@ type
 
  { TTabControl }
 
-  TImageList = class;  
+  TImageList = class;
   TTabStyle = (tsTabs, tsButtons, tsFlatButtons);
   TTabPosition = (tpTop, tpBottom, tpLeft, tpRight);
 
@@ -2391,7 +2391,7 @@ type
     procedure CreateList;
 
     function AddBitmap(Bmp, Msk : HBitmap): Integer;
-    function AddMasked(Bmp: HBitmap; TransparentColor: TColor): Integer;    
+    function AddMasked(Bmp: HBitmap; TransparentColor: TColor): Integer;
     function AddIcon(Image: hIcon): Integer;
 
     function LoadSystemIcons(SmallIcons: Boolean): Boolean;  //!!!
@@ -2427,7 +2427,7 @@ type
     procedure Undo;
     procedure Redo;
     procedure ClearUndo;
-    
+
     procedure LoadFromStream(Stream: TStream);
 
     property Color : Integer read FBkColor write SetBkColor;
@@ -2574,7 +2574,7 @@ type
     FResId: Integer;
     FStartFrame: Smallint;
     FStopFrame: Smallint;
-//    FStopCount: Integer;    
+//    FStopCount: Integer;
     FOpen: Boolean;
     procedure GetFrameInfo;
     function GetActualResHandle: THandle;
@@ -2590,13 +2590,13 @@ type
     procedure LoadCommonAVI(id:Integer);
 
     procedure Play(FromFrame, ToFrame: Word; Count: Integer);
-    procedure Seek(Frame: Smallint);    
+    procedure Seek(Frame: Smallint);
     procedure Stop;
 
     property CommonAVI: TCommonAVI read FCommonAVI write SetCommonAVI default aviNone;
     property StartFrame: Smallint read FStartFrame write SetStartFrame default 1;
     property StopFrame: Smallint read FStopFrame write SetStopFrame default 0;
- end;  
+ end;
 
  { TDateTimePicker }
 
@@ -2719,7 +2719,7 @@ type
   PTVItemEx = PTVItemExA;
   TTVItemExA = tagTVITEMEXA;
   TTVItemExW = tagTVITEMEXW;
-  TTVItemEx = TTVItemExA; 
+  TTVItemEx = TTVItemExA;
 
   PTVInsertStructA = ^TTVInsertStructA;
   PTVInsertStructW = ^TTVInsertStructW;
@@ -2761,7 +2761,7 @@ type
  TTreeView = class(TWinControl)
  private
     FImages: TImageList;
-    FStateImages: TImageList; 
+    FStateImages: TImageList;
     procedure SetStateImages(const Value: TImageList);
     procedure SetImages(const Value: TImageList);
  public
@@ -2819,7 +2819,7 @@ type
     iIndent: Integer;
   end;
 
-  
+
   {$EXTERNALSYM tagLVITEMW}
   tagLVITEMW = packed record
     mask: UINT;
@@ -2911,11 +2911,11 @@ type
     function  ColumnCount: Integer;
     procedure ColumnDelete(Index: Integer);
     procedure ColumnInsert(ACaption: String; Index, Width: Integer);
-    procedure ColumnInsertEx(ACaption: String; Index, Width: Integer; Align: TTextAlign);    
+    procedure ColumnInsertEx(ACaption: String; Index, Width: Integer; Align: TTextAlign);
     property  Columns[ColumnIndex: Integer]: String read GetColumns write SetColumns;
 
     property FlatScrollBars: Boolean read FFlatScrollBars write SetFlatScrollBars default False;
-    property HotTrack: Boolean read FHotTrack write SetHotTrack default False;    
+    property HotTrack: Boolean read FHotTrack write SetHotTrack default False;
 
     function ItemAdd(Caption: String): Integer;
     function  ItemCount:Integer;
@@ -3061,7 +3061,7 @@ type
      constructor Create(AParent : TWinControl; Path: String);
      procedure Update;
      property Directory: string read FDirectory write SetDirectory;
-     property Mask: string read FMask write SetMask;     
+     property Mask: string read FMask write SetMask;
   end;
 
 //Events
@@ -3069,7 +3069,7 @@ type
    Code: Pointer; // Pointer to method code.
    Data: Pointer; // Pointer to object, owning the method.
   end;
- 
+
   function NewEvent({Data,} Func: Pointer): TEvent;
   procedure Close;
   procedure Run(Form:TForm);
@@ -3101,7 +3101,7 @@ type
     Code: array[1..2] of Byte;
     WndProcPtr: Pointer;
     Instances: array[0..InstanceCount] of TObjectInstance;
-  end; 
+  end;
 
  function AllocateHWnd(Method: TWndMethod): HWND;
  procedure DeallocateHWnd(Wnd: HWND);
@@ -3127,7 +3127,7 @@ type
     FAccess: LongWord;
 {+}    procedure SetRootKey(Value: HKEY);
   protected
-//    function GetBaseKey(Relative: Boolean): HKey;        
+//    function GetBaseKey(Relative: Boolean): HKey;
   public
 {+}    constructor Create; {$IFDEF USE_OBJECT}{$ELSE} overload; {$ENDIF}
     constructor Create(AAccess: LongWord); overload;
@@ -3179,7 +3179,7 @@ type
 //    property LazyWrite: Boolean read FLazyWrite write FLazyWrite;
 {+}    property RootKey: HKEY read FRootKey write SetRootKey;
     property Access: LongWord read FAccess write FAccess;
- end; 
+ end;
 //TOpenDialog
  type
 
@@ -3408,13 +3408,13 @@ type
     //property Advanced: WORD read fAdvanced write fAdvanced;
     procedure FillOptions(DlgOptions: TPageSetupOptions);
     procedure Prepare;
-    //property AlwaysReset : Boolean read fAlwaysReset write fAlwaysReset;    
+    //property AlwaysReset : Boolean read fAlwaysReset write fAlwaysReset;
   public
     function Execute : Boolean;
   published
     constructor Create(Handle: THandle; Options: TPageSetupOptions);
     destructor Destroy; override;
-    
+
     function GetMargins: TRect;
     function GetMinMargins: TRect;
     function GetPaperSize:  TPoint;
@@ -3445,14 +3445,14 @@ type
     FHelpContext: Integer;
   public
     constructor Create(const Msg: string);
-    constructor CreateFmt(const Msg: string; const Args: array of const);    
+    constructor CreateFmt(const Msg: string; const Args: array of const);
     constructor CreateRes(Ident: Integer); overload;
-    constructor CreateRes(ResStringRec: PResStringRec); overload;    
+    constructor CreateRes(ResStringRec: PResStringRec); overload;
     constructor CreateResFmt(Ident: Integer; const Args: array of const); overload;
     constructor CreateResFmt(ResStringRec: PResStringRec; const Args: array of const); overload;
-    constructor CreateHelp(const Msg: string; AHelpContext: Integer);    
+    constructor CreateHelp(const Msg: string; AHelpContext: Integer);
     property HelpContext: Integer read FHelpContext write FHelpContext;
-    property Message: string read FMessage write FMessage;        
+    property Message: string read FMessage write FMessage;
   end;
 
   ExceptClass = class of Exception;
@@ -3464,7 +3464,7 @@ type
 //    AllowFree: Boolean;
   public
 //    procedure FreeInstance; override;
-  end; 
+  end;
 
   EOutOfMemory = class(EHeapException);
 
@@ -3547,7 +3547,7 @@ type
 
 procedure ConvertErrorFmt(ResString: PResStringRec; const Args: array of const);
 function ExceptObject: TObject;
-function LoadStr(Ident: Integer): string; 
+function LoadStr(Ident: Integer): string;
 function SafeLoadLibrary(const Filename: string; ErrorMode: UINT = SEM_NOOPENFILEERRORBOX): HMODULE;
 procedure RaiseLastWin32Error;
 function Win32Check(RetVal: BOOL): BOOL;
@@ -3555,12 +3555,12 @@ procedure Abort;
 
   { Generic procedure pointer }
 
-type  
+type
   TProcedure = procedure;
 
   { TThread }
 
-type 
+type
   EThread = class(Exception);
 
   TThreadMethod = procedure of object;
@@ -3635,7 +3635,7 @@ var
     FHandle: THandle;
     ni : TNotifyIconData;
     procedure SetNIcon;
-    procedure DelNIcon;   
+    procedure DelNIcon;
   private
     fHint: String;
     FIcon: hIcon;
@@ -3720,7 +3720,7 @@ type
   TProcess32First = function (hSnapshot: THandle; var lppe: TProcessEntry32): BOOL stdcall;
   TProcess32Next = function (hSnapshot: THandle; var lppe: TProcessEntry32): BOOL stdcall;
 
-function CreateToolhelp32Snapshot(dwFlags, th32ProcessID: DWORD): THandle;  
+function CreateToolhelp32Snapshot(dwFlags, th32ProcessID: DWORD): THandle;
 function Process32First(hSnapshot: THandle; var lppe: TProcessEntry32): BOOL;
 function Process32Next(hSnapshot: THandle; var lppe: TProcessEntry32): BOOL;
 
@@ -3762,7 +3762,7 @@ function DeCode(x:String; y:Byte):String;
 //Преобразования
 function StrLen(const Str: PChar): Cardinal; assembler;
 function StrEnd(const Str: PChar): PChar; assembler;
-function StrMove(Dest: PChar; const Source: PChar; Count: Cardinal): PChar; 
+function StrMove(Dest: PChar; const Source: PChar; Count: Cardinal): PChar;
 function StrCopy( Dest, Source: PChar ): PChar; assembler;
 function StrLCopy(Dest: PChar; const Source: PChar; MaxLen: Cardinal): PChar;
 function StrPCopy(Dest: PChar; const Source: string): PChar;
@@ -3825,7 +3825,7 @@ function UpperCase(const S: string): string;
 function LowerCase(const S: string): string;
 function AnsiLowerCase(const S: string): string;
 function AnsiUpperCase(const S: string): string;
-function AnsiCompareStr(const S1, S2: string): Integer; 
+function AnsiCompareStr(const S1, S2: string): Integer;
 function AnsiCompareStrNoCase(const S1, S2: string): Integer;
 function AnsiCompareText(const S1, S2: string): Integer;
 function AnsiStrPos(Str, SubStr: PChar): PChar;
@@ -3893,8 +3893,8 @@ type
   TTimeStamp = record
     Time: Integer;      { Number of milliseconds since midnight }
     Date: Integer;      { One plus number of days since 1/1/0001 }
-  end;  
-  
+  end;
+
 const
   MonthDays: array [Boolean] of TDayTable =
     ((31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31),
@@ -4110,7 +4110,7 @@ type
     procedure WriteFloat(const Section, Ident: String; Value: Single);
     procedure EraseSection(const Section: String);
     procedure DeleteKey(const Section, Ident: String);
-    procedure UpdateFile;    
+    procedure UpdateFile;
   end;
 
 procedure IniUpdateFile(FileName: String);
@@ -4160,9 +4160,9 @@ const
   SHGFI_LARGEICON         = $000000000;     { get large icon }
   SHGFI_SMALLICON         = $000000001;     { get small icon }
   SHGFI_OPENICON          = $000000002;     { get open icon }
-  SHGFI_USEFILEATTRIBUTES = $000000010;     { use passed dwFileAttribute }  
+  SHGFI_USEFILEATTRIBUTES = $000000010;     { use passed dwFileAttribute }
   SHGFI_ICON              = $000000100;     { get icon }
-  SHGFI_TYPENAME          = $000000400;     { get type name }  
+  SHGFI_TYPENAME          = $000000400;     { get type name }
   SHGFI_SYSICONINDEX      = $000004000;     { get system icon index }
 
 
@@ -4254,7 +4254,7 @@ const
    PSD_ENABLEPAGESETUPTEMPLATEHANDLE = $00020000;
    PSD_ENABLEPAGEPAINTHOOK           = $00040000;
    PSD_DISABLEPAGEPAINTING           = $00080000;
-   PSD_NONETWORKBUTTON               = $00200000;  
+   PSD_NONETWORKBUTTON               = $00200000;
 
 //******************************************************************************
 //  Error constants
@@ -4386,7 +4386,7 @@ type
   end;
   PInitCommonControlsEx = ^TInitCommonControlsEx;
   TInitCommonControlsEx = tagINITCOMMONCONTROLSEX;
-  
+
 const
   {$EXTERNALSYM ICC_LISTVIEW_CLASSES}
   ICC_LISTVIEW_CLASSES   = $00000001; // listview, header
@@ -4735,7 +4735,7 @@ begin
     PObjectInstance(ObjectInstance)^.Next := InstFreeList;
     InstFreeList := ObjectInstance;
   end;
-end;    
+end;
 
 function StdWndProc(Window: HWND; Message, WParam: Longint; LParam: Longint): Longint; stdcall; assembler;
 asm
@@ -4749,12 +4749,12 @@ asm
         CALL    [ECX].Pointer
         ADD     ESP,12
         POP     EAX
-end;    
+end;
 
 function CalcJmpOffset(Src, Dest: Pointer): Longint;
 begin
   Result := Longint(Dest) - (Longint(Src) + 5);
-end;    
+end;
 
 function MakeObjectInstance(Method: TWndMethod): Pointer;
 const
@@ -4786,8 +4786,8 @@ begin
   Instance := InstFreeList;
   InstFreeList := Instance^.Next;
   Instance^.Method := Method;
-end;    
-    
+end;
+
 function AllocateHWnd(Method: TWndMethod): HWND;
 var
   TempClass: TWndClass;
@@ -5011,6 +5011,7 @@ constructor TFont.Create; //08.03.03
 begin
   FName := DefaultFont;
   FColor := clBlack;
+  FBold := FW_NORMAL;
   FHeight := -11;
   FCharset := 1;
 //  FStyle:= [];
@@ -5080,7 +5081,16 @@ begin
   FSize := Value;
   FHeight := -MulDiv(Value, GetDeviceCaps(GetDc(0), LOGPIXELSY){FPixelsPerInch}, 72);
   UpdateFont;
-  if FControl<>nil then FControl.Invalidate ;  
+  if FControl<>nil then FControl.Invalidate ;
+end;
+
+function TFont.GetStyle: TFontStyles;
+begin
+  Result := [];
+  if FBold <> FW_NORMAL then Result := Result + [fsBold];
+  if FItalic <> 0 then Result := Result + [fsItalic];
+  if FUnderline <> 0 then Result := Result + [fsUnderline];
+  if FStrikeOut <> 0 then Result := Result + [fsStrikeOut];
 end;
 
 procedure TFont.SetStyle(Value: TFontStyles);
@@ -5372,7 +5382,7 @@ var
  msg : TMsg;
 begin
  if Assigned(FOnCreate) then FOnCreate(Self);
- if FVisible then ShowWindow(FHandle, SW_SHOW); 
+ if FVisible then ShowWindow(FHandle, SW_SHOW);
 { asm
   push 5
   push [ebx].FHandle
@@ -5394,7 +5404,7 @@ begin
   mov edx, eax
 
   cmp edx,0
-  jz  @@m     
+  jz  @@m
  end;}
   while True do
    begin
@@ -5418,7 +5428,7 @@ end;
 @@ret_EBX:
 //  ret
   xor eax, eax   }
-  if Assigned(Self.FOnCreate) then Self.FOnCreate(Self);  
+  if Assigned(Self.FOnCreate) then Self.FOnCreate(Self);
 asm
   push SW_SHOW
   push [EBX].FHandle //ShowWindow(Self.FHandle, SW_SHOW);
@@ -5439,7 +5449,7 @@ begin
   Application := Self;
   MsgDefHandle := FHandle;
   if Assigned(Self.FOnCreate) then Self.FOnCreate(Self);
-  if Assigned(Self.FOnShow) then Self.FOnShow(Self);  
+  if Assigned(Self.FOnShow) then Self.FOnShow(Self);
   if FVisible then ShowWindow(Self.FHandle, SW_SHOW);
   while {True} not AppTerminated do
    begin
@@ -5612,7 +5622,7 @@ begin
    end
   else
    begin
-    //if Assigned(FOnMessage) then FOnMessage(AMsg); 
+    //if Assigned(FOnMessage) then FOnMessage(AMsg);
     AMsg.Result := DefWindowProc(window_, AMessage, WParam, LParam);
     end;
   Result := AMsg.Result;
@@ -5634,11 +5644,11 @@ end;
 procedure TWinControl.Show;
 begin
 // if FHandle=0 then CreateWindow ;
-  if Assigned(FOnShow) then FOnShow(Self);   
+  if Assigned(FOnShow) then FOnShow(Self);
   ShowWindow(FHandle, SW_SHOW);
   SetForegroundWindow(FHandle);
 end;
-      
+
 procedure TWinControl.CreateWnd;
 begin
   FStyle := FStyle or WS_CLIPSIBLINGS or WS_CLIPCHILDREN;
@@ -5762,7 +5772,7 @@ begin
     else
      begin
       ExStyle := (ExStyle and not WS_EX_STATICEDGE) or WS_EX_CLIENTEDGE;
-      if Height = 16 then Height := 21; //Если высоту мы меняли, то меняем ;)      
+      if Height = 16 then Height := 21; //Если высоту мы меняли, то меняем ;)
      end;
    end;
 end;
@@ -5961,7 +5971,7 @@ begin
   end;  }
 
     Invalidate ;
-   end; 
+   end;
 end;
 
 procedure TWinControl.WMEraseBkgnd(var AMsg: TWMEraseBkgnd);
@@ -5980,7 +5990,7 @@ begin
 
  if (FBkMode = bk_OPaque) or (FParent = nil) then
   if FBrush = 0 then
-    Dispatch(TMessage(AMsg)) 
+    Dispatch(TMessage(AMsg))
   else
    begin
     FillRect(hd, R, FBrush);
@@ -6010,7 +6020,7 @@ begin
   FEnabled := Value;
   EnableWindow(FHandle, Value);
 end;
-//{$endif}   
+//{$endif}
 
 procedure TLabel.SetAlignment(const Value: Integer);
 begin
@@ -6021,7 +6031,7 @@ end;
 { TMemo }
 {procedure TMemo.SetLines;
 begin
-  Text := FLines.Text; 
+  Text := FLines.Text;
 end; }
 
 procedure TMemo.LineAdd(S: String);
@@ -6137,7 +6147,7 @@ asm
         PUSH     GWL_EXSTYLE
         PUSH     ECX
         CALL     SetWindowLong
-        CALL     SetWindowPos  
+        CALL     SetWindowPos
         POP      EAX
 //        CALL     Invalidate
 @@exit:
@@ -6331,7 +6341,7 @@ begin
   if Keys and MK_RBUTTON <> 0 then Include(Result, ssRight);
   if Keys and MK_MBUTTON <> 0 then Include(Result, ssMiddle);
   if GetKeyState(VK_MENU) < 0 then Include(Result, ssAlt);
-end; 
+end;
 
 procedure TWinControl.WMLButtonDown(var AMsg: TWMLButtonDown);
 begin
@@ -6411,7 +6421,7 @@ procedure MsgOk(S: String); //30.03.04
 asm
   xor edx, edx
   push edx
-  push edx                      
+  push edx
   push eax
   push edx
   call MessageBox
@@ -6431,13 +6441,13 @@ asm
   mov ebx, s
   mov eax, offset[defCaption]
   mov ecx, [Application]
-  //xor eax, eax   
+  //xor eax, eax
   jecxz @@1
   mov eax, [ecx].TApplication.FCaption
 @@1:
   push MB_OK
   push eax
-  push ebx   
+  push ebx
   push MsgDefHandle
   call MessageBox
 end;
@@ -6504,7 +6514,7 @@ const
           with PParams(GetWindowLong(hWnd, GWL_USERDATA))^ do
           begin
             SetLength(Result, GetWindowTextLength(Edit));
-            GetWindowText(Edit, PChar(Result), Length(Result) + 1); 
+            GetWindowText(Edit, PChar(Result), Length(Result) + 1);
           end;
           EndDialog(hWnd, ID_OK);
         end;
@@ -6544,7 +6554,7 @@ const
       cx: 140;
       cy: 58);
     DlgVLA: (0, 0, 0);
-    DlgFont: (#10, 'M', 'S', ' ', 'S', 'a', 'n', 's', ' ', 'S', 'e', 'r', 'i', 'f', #0, #0); 
+    DlgFont: (#10, 'M', 'S', ' ', 'S', 'a', 'n', 's', ' ', 'S', 'e', 'r', 'i', 'f', #0, #0);
     Prompt: (
       style: WS_CHILD or WS_VISIBLE;
       dwExtendedStyle: WS_EX_TRANSPARENT;
@@ -6950,7 +6960,7 @@ begin
  if OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES or TOKEN_QUERY, hToken) then
   begin
    LookupPrivilegeValue(nil, PChar(PrivilegieName), tkp.Privileges[0].Luid);
-   tkp_prev:=tkp;   
+   tkp_prev:=tkp;
    tkp.PrivilegeCount := 1;
    tkp.Privileges[0].Attributes := SE_PRIVILEGE_ENABLED;
    if AdjustTokenPrivileges(hToken, False, tkp, SizeOf(tkp), tkp_prev, ReturnLength) then result:=True;
@@ -6960,13 +6970,13 @@ end;
  { Process Functions }
 
 type
-  TCreateToolhelp32Snapshot = function (dwFlags, th32ProcessID: DWORD): THandle stdcall; 
+  TCreateToolhelp32Snapshot = function (dwFlags, th32ProcessID: DWORD): THandle stdcall;
 
 var
   KernelHandle: THandle;
   _CreateToolhelp32Snapshot: TCreateToolhelp32Snapshot;
   _Process32First: TProcess32First;
-  _Process32Next: TProcess32Next;    
+  _Process32Next: TProcess32Next;
 
 function InitToolHelp: Boolean;
 begin
@@ -7451,7 +7461,7 @@ begin
     Dec(Result);
   end;
 end;}
-      
+
 function ExtractFilePath(const FileName: shortstring): shortstring;
 var
   I: Integer;
@@ -7900,7 +7910,7 @@ begin
   if Value and (1 shl i) > 0 then
    result := '1' + result
   else
-   result := '0' + result;     
+   result := '0' + result;
 end;
 
 function StrUpper(Str: PChar): PChar; assembler; //01.04.04
@@ -8420,7 +8430,7 @@ begin
  result := s;
  for i := 1 to length(result) do
   if (result[i] in ['a'..'z', 'а'..'я']) then Dec(Result[i],32);
-end;  
+end;
 
 function LowerCase(const S:String):String;
 var
@@ -8494,7 +8504,7 @@ end;
 
 function StrByteType(Str: PChar; Index: Cardinal): TMbcsByteType; //15.02.03
 begin
-  Result := mbSingleByte;         
+  Result := mbSingleByte;
   if SysLocaleFarEast then
     Result := ByteTypeTest(Str, Index);
 end;
@@ -8619,7 +8629,7 @@ asm
   POP     EBX
   POP     EDI
   POP     ESI
-end;        
+end;
 {$else}
 function Format(const Format: string; const Args: array of const): string;
 var
@@ -9869,7 +9879,7 @@ end;
 function FileGetSize(FileName: String): Integer;
 var
   h:THandle;
-begin               
+begin
   h:=FileOpen(FileName, fmOpenRead);
   Result := GetFileSize(h, nil);
   CloseHandle(h);
@@ -9935,7 +9945,7 @@ begin
  StringToWideChar(STitle, STitleW, sTitleL);
  Result:=SHGetFileNameFromBrowse(hOwner,sFileW,Integer(sFileW),sInitDirW,
                                                          sDefExtW,sFilterW,sTitleW);
- SFile:=sFileW; 
+ SFile:=sFileW;
  CoTaskMemFree(sFileW);CoTaskMemFree(sInitDirW);
  CoTaskMemFree(sDefExtW);CoTaskMemFree(sFilterW);
  CoTaskMemFree(sTitleW);
@@ -9978,7 +9988,7 @@ var
   end;
 
 begin
-  Fillchar(ofn, sizeof(ofn), 0);   
+  Fillchar(ofn, sizeof(ofn), 0);
   ofn.lStructSize:= 76;
 //  if Handle <> 0 then
   ofn.hWndOwner := Handle ;
@@ -10041,7 +10051,7 @@ var
   end;
 
 begin
-  Fillchar(ofn, sizeof(ofn), 0);   
+  Fillchar(ofn, sizeof(ofn), 0);
   ofn.lStructSize:= 76;
 //  if Handle <> 0 then
   ofn.hWndOwner := Handle ;
@@ -10185,7 +10195,7 @@ const
   {$EXTERNALSYM CC_ANYCOLOR}
   CC_ANYCOLOR = $00000100;
 
-function ChooseColor(var CC: TChooseColor): Bool; stdcall; external 'comdlg32.dll'  name 'ChooseColorA';  
+function ChooseColor(var CC: TChooseColor): Bool; stdcall; external 'comdlg32.dll'  name 'ChooseColorA';
 
 function ColorDialog(Handle: THandle; FullOpen, PreventFullOpen: Boolean; var Colors: array of TColor): Boolean;
 var
@@ -10218,7 +10228,7 @@ begin
   FNLen:=Length(FileName)+1;
   nFileName := CoTaskMemAlloc(FnLen * SizeOf(WideChar));
   StringToWideChar(FileName, nFileName, FNLen);
-  Result := (SHChangeIconDialog(Handle, nFileName, 0, IconIndex) = 1);     
+  Result := (SHChangeIconDialog(Handle, nFileName, 0, IconIndex) = 1);
   //ShowMessage(WideCharToString(nFileName));
   CoTaskMemFree(nFileName);
 end;
@@ -10470,7 +10480,7 @@ begin
   Windows.FindClose(fh);
   if (SetCurrentDirectory('..')) and (RemoveDirectory(PChar(Dir))) then
     Result := True;
-end; 
+end;
 
 {$ifdef asm_ver}
 function FileExists(const FileName: String): Boolean; //20.03.03
@@ -11020,7 +11030,7 @@ procedure RegKeyRenVal(Key:hKey; OldName, NewName: string);
 var
  Len:Integer;
  Buffer: PChar;
- DataType: Integer; 
+ DataType: Integer;
 begin
  if RegKeyValExists(Key, OldName) and not RegKeyValExists(Key, NewName) then
   begin
@@ -11063,7 +11073,7 @@ var
   reg: hKey;
 begin
   reg := RegKeyOpenWrite(HKEY_CURRENT_USER, 'Software\Avl Programs\'+AppName+Section);
-  RegKeyDelete(reg, Section); 
+  RegKeyDelete(reg, Section);
 end;
 
 { IniFiles }
@@ -11152,7 +11162,7 @@ begin
       Inc(P, StrLen(P) + 1);
      end;
    end;
-end; 
+end;
 
 procedure IniGetSectionNames(FileName:String; var Sections: TStringList);
 var
@@ -11165,7 +11175,7 @@ begin
   GetMem(Buffer,IniBufferSize);
   Pc:=Buffer;
   i := GetPrivateProfileSectionNames(Buffer, IniBufferSize, PChar(FileName));
-  if i=0 then Exit;  
+  if i=0 then Exit;
   PcEnd:=Pc+i;
   repeat
     Sections.Add(Pc);
@@ -11228,7 +11238,7 @@ begin
   GetMem(Buffer, IniBufferSize);
   Pc:=Buffer;
   i:=GetPrivateProfileSection(PChar(Section), Buffer, IniBufferSize, PChar(FileName));
-  if i=0 then Exit;   
+  if i=0 then Exit;
   PcEnd:=Pc+i;
   repeat
     SLAdd(Values, Pc);
@@ -11267,7 +11277,7 @@ end;
 
 procedure TWinControl.Clear;
 begin
- SetText(''); 
+ SetText('');
 end;
 
 *)
@@ -11307,7 +11317,7 @@ begin
    begin
     SetStyle(FStyle and not BS_FLAT);
     FId := 2;
-   end; 
+   end;
 end;
 
 { TRegistry }
@@ -11459,7 +11469,7 @@ end;
 
 function TRegistry.ReadBool(const Name: string): Boolean;
 begin
- Result := RegKeyGetInt(FCurrentKey, Name) <> 0; 
+ Result := RegKeyGetInt(FCurrentKey, Name) <> 0;
 end;
 
 {function TRegistry.ReadCurrency(const Name: string): Currency;
@@ -11474,7 +11484,7 @@ end;}
 
 function TRegistry.ReadDateTime(const Name: string): TDateTime;
 begin
- Result := RegKeyGetDateTime(FCurrentKey, Name); 
+ Result := RegKeyGetDateTime(FCurrentKey, Name);
 end;
 
 {function TRegistry.ReadFloat(const Name: string): Double;
@@ -11489,7 +11499,7 @@ end;
 
 function TRegistry.ReadString(const Name: string): string;
 begin
- Result := RegKeyGetStr(FCurrentKey, Name);  
+ Result := RegKeyGetStr(FCurrentKey, Name);
 end;
 
 {function TRegistry.ReadTime(const Name: string): TDateTime;
@@ -11505,7 +11515,7 @@ end;
 
 procedure TRegistry.RenameValue(const OldName, NewName: string);
 begin
- RegKeyRenVal(FCurrentKey, OldName, NewName); 
+ RegKeyRenVal(FCurrentKey, OldName, NewName);
 end;
 
 {function TRegistry.ReplaceKey(const Key, FileName,
@@ -11545,7 +11555,7 @@ end;}
 
 function TRegistry.ValueExists(const Name: string): Boolean;
 begin
- Result := RegKeyValExists(FCurrentKey, Name); 
+ Result := RegKeyValExists(FCurrentKey, Name);
 end;
 
 procedure TRegistry.WriteBinaryData(const Name: string; var Buffer;
@@ -11571,7 +11581,7 @@ end; }
 
 procedure TRegistry.WriteDateTime(const Name: string; Value: TDateTime);
 begin
- RegKeySetDateTime(FCurrentKey, Name, Value); 
+ RegKeySetDateTime(FCurrentKey, Name, Value);
 end;
 
 procedure TRegistry.WriteExpandString(const Name, Value: string);
@@ -11586,12 +11596,12 @@ end; }
 
 procedure TRegistry.WriteInteger(const Name: string; Value: Integer);
 begin
- RegKeySetInt(FCurrentKey, Name, Value); 
+ RegKeySetInt(FCurrentKey, Name, Value);
 end;
 
 procedure TRegistry.WriteString(const Name, Value: string);
 begin
- RegKeySetStr(FCurrentKey, Name, Value);   
+ RegKeySetStr(FCurrentKey, Name, Value);
 end;
 
 {procedure TRegistry.WriteTime(const Name: string; Value: TDateTime);
@@ -11639,7 +11649,7 @@ begin
  if ofPathMustExist in foptions then opt:=opt or OFN_PATHMUSTEXIST;
  Result := OpenSaveDialog(FHandle, False, FTitle, FDefExtension,
    FFilter, FInitialDir, FFilterIndex, opt, FFileName);
-end;    
+end;
 
 { TStringList }
 
@@ -11914,7 +11924,7 @@ begin
    begin
     Result := i;
     Exit;
-   end; 
+   end;
 end;
 
 (*function SLInsert(List:TSList; Index: Integer; S:String): Integer;
@@ -11926,11 +11936,11 @@ begin
    begin
 
    end; }
-end;  *)                
+end;  *)
 
 procedure TStringList.Assign(Strings: TStringList);
 begin
-  SetTextStr(Strings.Text); 
+  SetTextStr(Strings.Text);
 end;
 
 procedure TStringList.SetSorted(const Value: Boolean);
@@ -11954,7 +11964,7 @@ begin
   Integer(Item2^.FString) := Temp;
   Temp := Integer(Item1^.FObject);
   Integer(Item1^.FObject) := Integer(Item2^.FObject);
-  Integer(Item2^.FObject) := Temp; 
+  Integer(Item2^.FObject) := Temp;
 end;
 
 procedure TStringList.QuickSort(L, R: Integer; SCompare: TStringListSortCompare);
@@ -12320,7 +12330,7 @@ end;
 function THandleStream.Write(const Buffer; Count: Integer): Longint;
 begin
   Result := FileWrite(FHandle, Buffer, Count);
-  if Result = -1 then Result := 0;      
+  if Result = -1 then Result := 0;
 end;
 
 { TTrayIcon }
@@ -12495,10 +12505,10 @@ begin
     if Msg = WM_TIMER then
      if Assigned(FOnTimer) then FOnTimer(Self);
     Result := DefWindowProc(FWindowHandle, Msg, wParam, lParam);
-   end; 
+   end;
 end;
 
-procedure TTimer.UpdateTimer;   
+procedure TTimer.UpdateTimer;
 begin
   KillTimer(FWindowHandle, 1);
   if (FInterval <> 0) and FEnabled and Assigned(FOnTimer) then
@@ -12652,7 +12662,7 @@ end;
 { TCheckBox }
 
 procedure TCheckBox.Click;
-begin 
+begin
   Checked := not Checked;
   inherited Click;
 end;
@@ -12695,7 +12705,7 @@ end;
 constructor TProgressBar.Create(AParent: TWinControl);
 begin
  inherited Create(AParent);
- InitCommonControls ; 
+ InitCommonControls ;
  FWidth := 150;
  FHeight := 16;
  FClassName := 'msctls_progress32';
@@ -12708,7 +12718,7 @@ begin
 
  FMax := 100;
  FStep := 1;
- FPosition := 0; 
+ FPosition := 0;
 end;
 
 procedure TProgressBar.SetMin(const Value: word);
@@ -12757,7 +12767,7 @@ end;
 
 procedure TWinControl.SetFocus;
 begin
- windows.SetFocus(FHandle); 
+ windows.SetFocus(FHandle);
 end;
 
 procedure TWinControl.WMCtlColor(var AMsg: TMessage);
@@ -12785,9 +12795,9 @@ begin
          repeat
            ctl := ctl.FParent;
          until (ctl<>nil) or (ctl.FBrush > 0);
-         if ctl.FBrush<>0 then Result := ctl.FBrush;  
+         if ctl.FBrush<>0 then Result := ctl.FBrush;
        end;
-   end;    
+   end;
   end;
 
 {  if FBrush<>0 then
@@ -12836,7 +12846,7 @@ var
   R : TRect;
 begin
   Windows.GetClientRect(FHandle, R);
-  Result := R.Right - R.Left;    
+  Result := R.Right - R.Left;
 end;
 
 { TList }
@@ -13161,7 +13171,7 @@ begin
 
   Canvas.MoveTo(0, 0);
   Canvas.LineTo(Width,0);
-  
+
   Canvas.MoveTo(0, 0);
   Canvas.LineTo(0,Height);
 
@@ -13187,7 +13197,7 @@ begin
   Canvas.Brush.Style := bsClear ;
   Flags := DT_EXPANDTABS or DT_SINGLELINE or DT_VCENTER or DT_CENTER { or VAlignments[fVerticalAlign] or Alignments[fTextAlign]};
 //  SetBkColor(Canvas.Handle, Color);
-  SetBkMode(Canvas.Handle, TRANSPARENT); 
+  SetBkMode(Canvas.Handle, TRANSPARENT);
   DrawText(Canvas.Handle, PChar(Caption), Length(Caption), Rect, Flags);
 //  Canvas.Brush.Style := bsSolid ;
 end;
@@ -13564,7 +13574,7 @@ begin
 //  tcItem.iImage :=
   tcItem.dwStateMask  := ImageIndex;
   tcItem.iImage  := ImageIndex;
-  Perform(TCM_SETITEM, TabIndex, LPARAM(@tcItem));  
+  Perform(TCM_SETITEM, TabIndex, LPARAM(@tcItem));
 end;
 
 { TComboBox }
@@ -13602,7 +13612,7 @@ begin
     SendMessage(FHandle,CB_SHOWDROPDOWN,WParam(true),0);
     SendMessage(FHandle,CB_SETEXTENDEDUI,WParam(false),0);
   end;
-//  inherited DoMouseDown(AMsg, Button, Shift);   
+//  inherited DoMouseDown(AMsg, Button, Shift);
 end;}
 
 function TComboBox.GetDroppedDown: Boolean;
@@ -13675,7 +13685,7 @@ begin
 //  ShowMessage('ok');
   cbRect := AMsg.DrawItemStruct.rcItem;
   cbRect.Left := 20;
-  
+
   DrawText(amsg.DrawItemStruct.hDC, PChar(Items[AMsg.DrawItemStruct.itemID]), Length(Items[AMsg.DrawItemStruct.itemID]), cbRect, DT_SINGLELINE or DT_VCENTER or DT_NOPREFIX);
 end; *)
 
@@ -13742,7 +13752,7 @@ end;
 
 procedure TCanvas.Rectangle(X1, Y1, X2, Y2: Integer);
 begin
- Windows.Rectangle(FHandle, x1, y1, x2, y2); 
+ Windows.Rectangle(FHandle, x1, y1, x2, y2);
 end;
 
 procedure TCanvas.TextOut(X, Y: Integer; const Text: string);
@@ -13753,7 +13763,7 @@ end;
 type
   PPoints = ^TPoints;
   TPoints = array[0..0] of TPoint;
-    
+
 procedure TCanvas.Polyline(const Points: array of TPoint);
 begin
   Windows.Polyline(FHandle, PPoints(@Points)^, High(Points) + 1);
@@ -13761,12 +13771,12 @@ end;
 
 procedure TCanvas.FillRect(const Rect: TRect);
 begin
-  Windows.FillRect(FHandle, Rect, Brush.Handle); 
+  Windows.FillRect(FHandle, Rect, Brush.Handle);
 end;
 
 function TCanvas.GetClipRect: TRect;
 begin
-  GetClipBox(FHandle, Result); 
+  GetClipBox(FHandle, Result);
 end;
 
 procedure TCanvas.FloodFill(X, Y: Integer; Color: TColor; FillStyle: TFillStyle);
@@ -13779,7 +13789,7 @@ end;
 constructor TCanvas.CreateFromDC(DC: hDC);
 begin
   FHandle := DC;
-  
+
   FBrush := TBrush.Create(Self);
   FPen := TPen.Create(Self);
 end;
@@ -13909,7 +13919,7 @@ end;
 procedure TPen.SetMode(const Value: TPenMode);
 begin
   FMode := Value;
-  UpdatePen ;  
+  UpdatePen ;
 end;
 
 procedure TPen.SetStyle(const Value: TPenStyle);
@@ -13966,7 +13976,7 @@ end;
 procedure TBrush.Update;
 var
   hbs:tagLOGBRUSH;
-begin         
+begin
   hbs.lbColor := FColor;
   hbs.lbStyle := BS_HATCHED;
 
@@ -13977,7 +13987,7 @@ begin
   if FStyle = bsFDiagonal then hbs.lbHatch := HS_FDIAGONAL;
   if FStyle = bsBDiagonal then hbs.lbHatch := HS_BDIAGONAL;
   if FStyle = bsCross then hbs.lbHatch := HS_CROSS;
-  if FStyle = bsDiagCross then hbs.lbHatch := HS_DIAGCROSS; 
+  if FStyle = bsDiagCross then hbs.lbHatch := HS_DIAGCROSS;
 
   FHandle := CreateBrushIndirect(hbs);
   DeleteObject(SelectObject(FDC, FHandle));
@@ -14004,12 +14014,12 @@ end;
 function TImage.GetBitmap: TBitmap;
 begin
   Result := TBitmap.Create ;
-  Result.Handle := FHandle ; 
+  Result.Handle := FHandle ;
 end;
 
 procedure TImage.SetBitmap(const Value: TBitmap);
 begin
-  SetBitmapHandle(Value.Handle); 
+  SetBitmapHandle(Value.Handle);
 end;
 
 procedure TImage.LoadFromFile(FileName: String);
@@ -14020,7 +14030,7 @@ end;
 
 procedure TImage.SetBitmapRes(const Value: String);
 begin
-  FBitmapRes := Value;     
+  FBitmapRes := Value;
   FBitmap := LoadBitmap(Hinstance, PChar(Value));
 
   if (Style and SS_BITMAP)<>SS_BITMAP then Style := Style or SS_BITMAP;
@@ -14142,7 +14152,7 @@ begin
     ti.uFlags := TTF_IDISHWND{ or TTF_CENTERTIP }or TTF_SUBCLASS  ;
     ti.uId := FHandle;
     ti.lpszText := PChar(FHint);
-    
+
     SendMessage(hwndTooltip, TTM_ADDTOOL, 0, Integer(@ti));
    end
   else
@@ -14349,7 +14359,7 @@ procedure TWinControl.SetCursor(const Value: TCursor);
 begin
   if Value = FCursor then Exit;
   FCursor := Value;
-  Windows.SetCursor(FCursor);   
+  Windows.SetCursor(FCursor);
 end;
 
 { TSpinEdit }
@@ -14573,7 +14583,7 @@ end;
 procedure TStatusBar.SetSimplePanel(const Value: Boolean);
 begin
 //  if FSimplePanel <> Value then
-//   begin 
+//   begin
     FSimplePanel := Value;
     Perform(SB_SIMPLE, Ord(not Value), 0);
 //   end;
@@ -14820,7 +14830,7 @@ begin
     DestroyWindow(ThreadWindow);
     ThreadWindow := 0;
   end;
-end;  
+end;
 
 function ThreadWndProc(Window: HWND; Message, wParam, lParam: Longint): Longint; stdcall;
 begin
@@ -15114,7 +15124,7 @@ end;
 function TMemo.LineCurIndex: Integer;
 begin
   Result := Perform(EM_LINEFROMCHAR, word(-1),0);
-end;  
+end;
 
 function TMemo.LineCount: Integer;
 begin
@@ -15143,7 +15153,7 @@ end;
 
 function TWinControl.GetVisible: Boolean;
 begin
-  Result := IsWindowVisible(FHandle); 
+  Result := IsWindowVisible(FHandle);
 end;
 
 { TMonthCalendar }
@@ -15290,7 +15300,7 @@ begin
    begin
     FOptionsEx := Value;
     Perform(LVM_SETEXTENDEDLISTVIEWSTYLE, 0, Value);
-   end; 
+   end;
 end;
 
 procedure TListView.ItemDelete(Index: Integer);
@@ -15304,7 +15314,7 @@ const
     LVA_ALIGNRIGHT, LVA_ALIGNTOP, LVA_DEFAULT, LVA_SNAPTOGRID);
 begin
   Perform(LVM_ARRANGE, Codes[Code], 0);
-end;  
+end;
 
 function TListView.ColumnCount: Integer;
 begin
@@ -15446,7 +15456,7 @@ begin
   LC.mask := LVCF_TEXT;
   LC.pszText := '';
   if Value <> '' then LC.pszText := @Value[1];
-  Perform(LVM_SETCOLUMN, ColumnIndex, Integer(@LC));  //Устанавливаем текст колонки 
+  Perform(LVM_SETCOLUMN, ColumnIndex, Integer(@LC));  //Устанавливаем текст колонки
 end;
 
 procedure TListView.ColumnInsertEx(ACaption: String; Index, Width: Integer; Align: TTextAlign);
@@ -15653,7 +15663,7 @@ function TImageList.AddIcon(Image: hIcon): Integer;
 begin
   if FHandle = 0 then CreateList;
   Result := ImageList_AddIcon(FHandle, Image);
-end;   
+end;
 
 procedure TImageList.SetHeight(const Value: Integer);
 begin
@@ -15704,7 +15714,7 @@ end;
 procedure TImageList.SetBkColor(const Value: TColor);
 begin
   if FHandle = 0 then Exit;
-  ImageList_SetBkColor(FHandle, Value); 
+  ImageList_SetBkColor(FHandle, Value);
 end;
 
 function TImageList.AddBitmap(Bmp, Msk: HBitmap): Integer;
@@ -15715,7 +15725,7 @@ end;
 
 function TImageList.AddMasked(Bmp: HBitmap; TransparentColor: TColor): Integer;
 begin
-  if FHandle = 0 then CreateList ;  
+  if FHandle = 0 then CreateList ;
   Result := ImageList_AddMasked(FHandle, Bmp, ColorToRGB(TransparentColor));
 end;
 
@@ -15734,7 +15744,7 @@ begin
   begin
      Handle := NewHandle;
 //     FShareImages := True;
-  end;  
+  end;
 end;
 
 procedure TImageList.Draw(DC: hDC; X, Y, Index: Integer);
@@ -15890,7 +15900,7 @@ begin
   Perform(TVM_SETIMAGELIST, TVSIL_NORMAL, Value.FHandle);
 end;
 
-{ TRichEdit }   
+{ TRichEdit }
 
 constructor TRichEdit.Create(AParent: TWinControl; Text: String; WordWrap: Boolean);
 const
@@ -15955,7 +15965,7 @@ end;
 procedure TRichEdit.SetExMaxLength(const Value: Integer);
 begin
   FMaxLength := Value;
-  Perform(EM_EXLIMITTEXT, 0, Value);  
+  Perform(EM_EXLIMITTEXT, 0, Value);
 end;
 
 procedure TRichEdit.LoadFromStream(Stream: TStream);
@@ -15995,7 +16005,7 @@ end;
 
 function THeaderControl.SectionAdd(Text: String; Width: Integer): Integer;
 begin
-  Result := SectionInsert(SectionCount, Text, Width); 
+  Result := SectionInsert(SectionCount, Text, Width);
 end;
 
 function THeaderControl.SectionCount: Integer;
@@ -16108,7 +16118,7 @@ begin
       res.ReadBuffer(FFrameCount, SizeOf(FFrameCount));
 
    end;  }
-  
+
 {  with CreateResStream do
   try
     if Seek(CountOffset, soFromBeginning) = CountOffset then
@@ -16234,7 +16244,7 @@ begin
    begin
     SetStyle(FStyle or TCS_BUTTONS or TCS_FLATBUTTONS);
     SetStyle(FStyle and not TCS_TABS);
-   end; 
+   end;
 end;
 
 procedure TTabControl.SetImages(const Value: TImageList);
@@ -16294,7 +16304,7 @@ begin
     TMPCF.hWndOwner:=Application.Handle
   else
     TMPCF.hWndOwner:=0;
-    
+
   TMPCF.hInstance:=0;
   TMPCF.Flags:=CF_ENABLEHOOK;
 
@@ -16391,7 +16401,7 @@ begin
     SetStyle(FStyle and not TabPos[FTabPosition]);
     SetStyle(FStyle or TabPos[Value]);
     FTabPosition := Value;
-   end; 
+   end;
 end;
 
 { TScrollBar }
@@ -16429,7 +16439,7 @@ begin
    begin
     FMax := Value;
     SetScrollRange(FHandle, SB_CTL, FMin, FMax, True);
-   end; 
+   end;
 end;
 
 procedure TScrollBar.SetMin(const Value: Integer);
@@ -16446,7 +16456,7 @@ begin
   if FPosition <> Value then
    begin
     FPosition := Value;
-    SetScrollPos(FHandle, SB_CTL, FPosition, True); 
+    SetScrollPos(FHandle, SB_CTL, FPosition, True);
    end;
 end;
 
@@ -16477,7 +16487,7 @@ begin
    begin
     FDirectory := Value;
     Update;
-   end; 
+   end;
 end;
 
 procedure TFileListBox.SetMask(const Value: string);
@@ -16486,7 +16496,7 @@ begin
    begin
     FMask := Value;
     Update;
-   end; 
+   end;
 end;
 
 procedure TFileListBox.Update;
@@ -16617,9 +16627,9 @@ begin
     else
      begin
       ExStyle := ExStyle and not WS_EX_CLIENTEDGE;
-      Style := Style or WS_BORDER ;      
+      Style := Style or WS_BORDER ;
      end;
-   end; 
+   end;
 end;
 
 procedure TWinControl.Change;
@@ -16657,7 +16667,7 @@ end;
 
 procedure TLabeledEdit.WMMove(var AMsg: TMessage);
 begin
-  FLabelEd.SetPosition(Left, Top-15);  
+  FLabelEd.SetPosition(Left, Top-15);
 end;
 
 procedure TWinControl.WMKeyDown(var AMsg: TWMKeyDown);
@@ -16760,7 +16770,7 @@ begin
      begin
       Style := Style or BS_BITMAP;
       Perform(BM_SETIMAGE, IMAGE_BITMAP, fGlyph);
-     end; 
+     end;
    end;
 end;
 
@@ -16768,7 +16778,7 @@ end;
 
 var
   StockIcon: HICON;
-//  BitmapImageLock: TRTLCriticalSection;  
+//  BitmapImageLock: TRTLCriticalSection;
 
 const
   rc3_StockIcon = 0;
@@ -17366,7 +17376,7 @@ begin
   if {FImage.}FMemoryImage <> nil then
    with {FImage.}FMemoryImage do
     Stream.WriteBuffer(Memory^, Size);
-end;  
+end;
 
 procedure TIcon.LoadFromFile(const Filename: string);
 var
@@ -17435,7 +17445,7 @@ begin
     Item.fsState := 0;
     Item.fsStyle := TBSTYLE_SEP;
     Item.iString := -1;
-    Result := -1;    
+    Result := -1;
    end
   else
    begin
@@ -17446,7 +17456,7 @@ begin
     Item.iString := Perform(TB_ADDSTRING, 0, Integer(PChar(Caption + #0)));
     Result := FButtonCount;
     Inc(FButtonCount);
-   end;       
+   end;
   Perform(TB_ADDBUTTONS, 1, Integer(@Item));
 //    Perform(TB_ADDBUTTONS, 1, Integer(@Item));
 //    Perform(TB_AUTOSIZE,0,0 );
@@ -17458,7 +17468,7 @@ begin
    begin
     FIndent := Value;
     Perform(TB_SETINDENT, Value, 0);
-   end; 
+   end;
 end;
 
 procedure TToolBar.SetImages(const Value: TImageList); //16.03.03
@@ -17675,7 +17685,7 @@ procedure TBitmap.SaveToStream(Stream: TStream);
 var
   BFH : TBitmapFileHeader;
   Pos : Integer;
-  
+
    function WriteBitmap : Boolean;
    var ColorsSize, BitsSize, Size : Integer;
    begin
@@ -18447,7 +18457,7 @@ var
 begin
   if Message.DC = 0 then {DC:= }BeginPaint(FHandle, PaintStruct){ else DC := Message.DC} ;
   Paint;
-  if Message.DC = 0 then EndPaint(FHandle, PaintStruct); 
+  if Message.DC = 0 then EndPaint(FHandle, PaintStruct);
 end;
 
 (*function TBitmap.GetScanLine(Y: Integer): Pointer;
@@ -18841,10 +18851,10 @@ begin
      APort := PChar(fDevNames) + fDevNames^.wOutputOffset;
      ADevMode := ftagPSD.hDevMode;
     end;
-  finally 
+  finally
    Result := PrinterInfo;
   end;
-end; 
+end;
 
 function TPageSetupDialog.GetPaperSize :  TPoint;
 begin
@@ -18906,7 +18916,7 @@ begin
     DeleteDC( DC );
    end;
 end;  }
-         
+
 
 
 { TMDIForm }
@@ -18917,7 +18927,7 @@ var
 begin
   inherited ;
   SetSize(600, 450) ;
-  
+
   ClientStruct.hWindowMenu := 0;
   ClientStruct.idFirstChild := 100;
   FClientHandle := CreateWindowEx(0, 'MDICLIENT', '', WS_CHILD or WS_VISIBLE or WS_CLIPCHILDREN,CW_USEDEFAULT,
@@ -19012,7 +19022,7 @@ begin
   mdicreate.cx := 300 ;
   mdicreate.cy := 250;
   SendMessage(Parent.FClientHandle, WM_MDICREATE, 0, Integer(@mdicreate)); }
-  FHandle := CreateMDIWindow(PChar(FClassName), FCaption, 0, 50, 50, 300, 250, Parent.FClientHandle, hInstance, 0); 
+  FHandle := CreateMDIWindow(PChar(FClassName), FCaption, 0, 50, 50, 300, 250, Parent.FClientHandle, hInstance, 0);
 end;
 
 { TComponent }

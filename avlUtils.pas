@@ -7,6 +7,8 @@ uses Windows, AvL;
 
 type
   TSysCharSet = set of Char;
+  TFontField = (ffSize, ffStyle, ffCharset, ffWidth, ffHeight, ffPitch, ffColor);
+  TFontFields = set of TFontField;
 
 function StrEnd(const Str: PChar): PChar;
 function StrCopy(Dest: PChar; const Source: PChar): PChar;
@@ -49,7 +51,7 @@ function ExePath: string;
 procedure VGetMem(var P: Pointer; Size: Cardinal);
 procedure VFreeAndNil(var P: Pointer; Size: Cardinal);
 function UniTempFile: string;
-function FontToStr(Font: TFont): string;
+function FontToStr(Font: TFont; Fields: TFontFields = [ffSize, ffStyle]): string;
 procedure StrToFont(S: string; Font: TFont);
 function Tok(const Sep: string; var S: string): string;
 function GetTempDir: string;
@@ -488,43 +490,63 @@ begin
   end;
 end;
 
-const Sep='|';
+function FontToStr(Font: TFont; Fields: TFontFields): string;
+const Sep = ',';
 
-function FontToStr(Font: TFont): string;
-
-  function YesNo(Exp: Boolean): Char;
+  function Add(F: TFontField; const V: string): string; overload;
   begin
-    if Exp
-      then Result:='Y'
-      else Result:='N';
+    if F in Fields then
+      Result := Sep + V
+    else
+      Result := '';
+  end;
+
+  function Add(F: TFontField; P: Char; V: Integer): string; overload;
+  begin
+    Result := Add(F, P + IntToStr(V));
+  end;
+
+  function Add(F: TFontField; C: Boolean; const V: string): string; overload;
+  begin
+    if C then
+      Result := Add(F, V)
+    else
+      Result := '';
   end;
 
 begin
-  Result:=IntToStr(Font.Charset)+Sep+IntToStr(Font.Color)+Sep+IntToStr(Font.Height)+
-    Sep+IntToStr(Font.Width)+Sep+Font.Name+Sep+IntToStr(Ord(Font.Pitch))+Sep+
-    IntToStr(Font.Size)+Sep+YesNo(fsBold in Font.Style)+YesNo(fsItalic in Font.Style)+
-    YesNo(fsUnderline in Font.Style)+YesNo(fsStrikeOut in Font.Style);
+  Result := Font.Name + Add(ffSize, IntToStr(Font.Size)) +
+    Add(ffStyle, fsBold in Font.Style, 'B') + Add(ffStyle, fsItalic in Font.Style, 'I') +
+    Add(ffStyle, fsUnderline in Font.Style, 'U') + Add(ffStyle, fsStrikeout in Font.Style, 'S') +
+    Add(ffWidth, 'w', Font.Width) + Add(ffHeight, 'h', Font.Height) +
+    Add(ffPitch, 'p', Ord(Font.Pitch)) + Add(ffCharset, 'e', Font.Charset) +
+    Add(ffColor, 'c', Font.Color);
 end;
 
 procedure StrToFont(S: string; Font: TFont);
+const Sep = ',';
+var F: string;
 begin
   if S='' then Exit;
-  Font.Charset:=StrToInt(Tok(Sep, S));
-  Font.Color:=StrToInt(Tok(Sep, S));
-  Font.Height:=StrToInt(Tok(Sep, S));
-  Font.Width:=StrToInt(Tok(Sep, S));
-  Font.Name:=Tok(Sep, S);
-  Font.Pitch:=TFontPitch(StrToInt(Tok(Sep, S)));
-  Font.Size:=StrToInt(Tok(Sep, S));
-  Font.Style:=[];
-  if S[1]='Y' then
-    Font.Style:=Font.Style+[fsBold];
-  if S[2]='Y' then
-    Font.Style:=Font.Style+[fsItalic];
-  if S[3]='Y' then
-    Font.Style:=Font.Style+[fsUnderline];
-  if S[4]='Y' then
-    Font.Style:=Font.Style+[fsStrikeOut];
+  Font.Name := Trim(Tok(Sep, S));
+  Font.Style := [];
+  while Length(S) > 0 do
+  begin
+    F := Trim(Tok(Sep, S));
+    if Length(F) = 0 then Continue;
+    case F[1] of
+      '0'..'9': Font.Size := (StrToInt(F));
+      'b', 'B': Font.Style := Font.Style + [fsBold];
+      'i', 'I': Font.Style := Font.Style + [fsItalic];
+      's', 'S': Font.Style := Font.Style + [fsStrikeOut];
+      'u', 'U': Font.Style := Font.Style + [fsUnderline];
+      'c', 'C': Font.Color := StrToInt(Copy(F, 2, MaxInt));
+      'h', 'H': Font.Height := StrToInt(Copy(F, 2, MaxInt));
+      'w', 'W': Font.Width := StrToInt(Copy(F, 2, MaxInt));
+      'p', 'P': Font.Pitch := TFontPitch(StrToInt(Copy(F, 2, MaxInt)));
+      'e', 'E': Font.Charset := StrToInt(Copy(F, 2, MaxInt));
+    end;
+  end;
 end;
 
 function Tok(const Sep: string; var S: string): string;
