@@ -80,6 +80,7 @@ function MakeMethod(Func: Pointer; Data: Pointer = nil): TMethod;
 function FileOpenW(const FileName: WideString; Mode: LongWord): Integer;
 function FileCreateW(const FileName: WideString): Integer;
 function FileSeek64(Handle: THandle; Offset: Int64; Origin: Integer): Int64;
+function FormatEx(const Fmt: string; const Args: array of const): string;
 
 implementation
 
@@ -935,6 +936,68 @@ begin
   Offs.QuadPart := Offset;
   Offs.LowPart := SetFilePointer(THandle(Handle), Offs.LowPart, @Offs.HighPart, Origin);
   Result := Offs.QuadPart;
+end;
+
+function crt_vcsprintf(Fmt: PAnsiChar; ArgPtr: Pointer): Integer; cdecl;
+  external 'msvcrt.dll' name '_vscprintf';
+function crt_vsnprintf(Buf: PAnsiChar; Count: Cardinal; Fmt: PAnsiChar; ArgPtr: Pointer): Integer; cdecl;
+  external 'msvcrt.dll' name '_vsnprintf';
+
+function FormatEx(const Fmt: string; const Args: array of const): string;
+var
+  ArgData: array of Byte;
+  TmpStrings: array of AnsiString;
+  ArgCount, Used, i: Integer;
+  D: Double;
+
+  procedure Add32(V: Cardinal);
+  begin
+    Move(V, ArgData[Used], 4);
+    Inc(Used, 4);
+  end;
+
+  procedure Add64(const V: Int64);
+  begin
+    Move(V, ArgData[Used], 8);
+    Inc(Used, 8);
+  end;
+
+begin
+  ArgCount := High(Args) + 1;
+  SetLength(ArgData, Max(ArgCount, 1) * 8);
+  SetLength(TmpStrings, ArgCount);
+  Used := 0;
+  for i := 0 to High(Args) do
+    case Args[i].VType of
+      vtInteger:   Add32(Cardinal(Args[i].VInteger));
+      vtBoolean:   Add32(Ord(Args[i].VBoolean));
+      vtChar:      Add32(Ord(Args[i].VChar));
+      vtWideChar:  Add32(Ord(Args[i].VWideChar));
+      vtExtended:
+        begin
+          D := Args[i].VExtended^;
+          Move(D, ArgData[Used], 8);
+          Inc(Used, 8);
+        end;
+      vtInt64:     Add64(Args[i].VInt64^);
+      vtPointer:   Add32(Cardinal(Args[i].VPointer));
+      vtPChar:     Add32(Cardinal(Args[i].VPChar));
+      vtPWideChar: Add32(Cardinal(Args[i].VPWideChar));
+      vtAnsiString: Add32(Cardinal(Args[i].VAnsiString));
+      vtWideString: Add32(Cardinal(Args[i].VWideString));
+      vtString:
+        begin
+          TmpStrings[i] := Args[i].VString^;
+          Add32(Cardinal(PAnsiChar(TmpStrings[i])));
+        end;
+      vtObject: Add32(Cardinal(Pointer(Args[i].VObject)));
+      vtClass:  Add32(Cardinal(Pointer(Args[i].VClass)));
+    else
+      raise Exception.Create('Unsupported argument type');
+    end;
+  SetLength(Result, crt_vcsprintf(PAnsiChar(Fmt), @ArgData[0]));
+  if Length(Result) > 0 then
+    crt_vsnprintf(@Result[1], Length(Result) + 1, PAnsiChar(Fmt), @ArgData[0]);
 end;
 
 end.
