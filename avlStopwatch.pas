@@ -5,22 +5,29 @@ interface
 uses Windows, AvL;
 
 type
-  TStopwatch = class
-  private
-    FFrequency, FStart, FElapsed: Int64;
-    FRunning: Boolean;
-    function GetElapsedTicks: Int64;
-    function GetElapsedMilliseconds: Double;
-  public
-    constructor Create;
-    class function StartNew: TStopwatch;
+  IStopwatch = interface
     procedure Start;
     procedure Stop;
     procedure Reset;
     procedure Restart;
-    property IsRunning: Boolean read FRunning;
-    property ElapsedTicks: Int64 read GetElapsedTicks;
-    property ElapsedMilliseconds: Double read GetElapsedMilliseconds;
+    function IsRunning: Boolean;
+    function ElapsedTicks: Int64;
+    function ElapsedMilliseconds: Double;
+  end;
+  TStopwatch = class(TInterfacedObject, IStopwatch)
+  private
+    FFrequency, FStart, FElapsed: Int64;
+    FRunning: Boolean;
+  public
+    constructor Create;
+    class function StartNew: IStopwatch;
+    procedure Start;
+    procedure Stop;
+    procedure Reset;
+    procedure Restart;
+    function IsRunning: Boolean;
+    function ElapsedTicks: Int64;
+    function ElapsedMilliseconds: Double;
   end;
 
 implementation
@@ -32,7 +39,7 @@ begin
     raise Exception.Create('High-resolution timer is unavailable');
 end;
 
-class function TStopwatch.StartNew: TStopwatch;
+class function TStopwatch.StartNew: IStopwatch;
 begin
   Result := TStopwatch.Create;
   Result.Start;
@@ -70,7 +77,7 @@ begin
   Start;
 end;
 
-function TStopwatch.GetElapsedTicks: Int64;
+function TStopwatch.ElapsedTicks: Int64;
 var T: Int64;
 begin
   Result := FElapsed;
@@ -81,9 +88,14 @@ begin
   end;
 end;
 
-function TStopwatch.GetElapsedMilliseconds: Double;
+function TStopwatch.ElapsedMilliseconds: Double;
 begin
-  Result := GetElapsedTicks * 1000 / FFrequency;
+  Result := ElapsedTicks * 1000 / FFrequency;
+end;
+
+function TStopwatch.IsRunning: Boolean;
+begin
+  Result := FRunning;
 end;
 
 end.
